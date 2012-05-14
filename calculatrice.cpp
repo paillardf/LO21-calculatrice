@@ -12,3 +12,4 @@ Calculatrice::~Calculatrice()
 {
     delete ui;
 }
+

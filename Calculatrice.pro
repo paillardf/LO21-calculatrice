@@ -11,8 +11,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        calculatrice.cpp
+        calculatrice.cpp \
+    pile.cpp \
+    constante.cpp \
+    commande.cpp
 
-HEADERS  += calculatrice.h
+HEADERS  += calculatrice.h \
+    pile.h \
+    constante.h \
+    commande.h
 
 FORMS    += calculatrice.ui

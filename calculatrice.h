@@ -10,6 +10,11 @@ class Calculatrice;
 class Calculatrice : public QMainWindow
 {
     Q_OBJECT
+    std::list<Pile> calc;
+
+
+
+
     
 public:
     explicit Calculatrice(QWidget *parent = 0);
