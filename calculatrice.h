@@ -2,6 +2,7 @@
 #define CALCULATRICE_H
 
 #include <QMainWindow>
+#include <pile.h>
 
 namespace Ui {
 class Calculatrice;

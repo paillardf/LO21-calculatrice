@@ -12,12 +12,23 @@ public:
     Pile();
     ~Pile();
 
-    void swap(int x, int y);
-    void sum(int x);
-    void mean(int x);
-    void clear();
-    void dup();
-    void drop();
+    Constante * pop(){
+        Constante * c = tpile.top();
+        tpile.pop();
+        return c;
+    }
+
+    void push(Constante * c){
+        tpile.push(c);
+
+    }
+
+//    void swap(int x, int y);
+//    void sum(int x);
+//    void mean(int x);
+//    void clear();
+//    void dup();
+//    void drop();
 };
 
 #endif // PILE_H
