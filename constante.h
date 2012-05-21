@@ -1,39 +1,95 @@
 
 #ifndef CONSTANTE_H
 #define CONSTANTE_H
-#include <string>
+#include <QString>
 #include <strstream>
 #include <typeinfo>
 
 class Constante
 {
 public:
-    Constante();
-    virtual std::string getValuetoString() = 0;
+   // Constante();
+    virtual QString getValuetoString() = 0;
     virtual Constante * operator+(Constante & c1) = 0;
+
 };
 
 
-class CReel
+class CEntier : public Constante
 {
 private:
-    float value;
+    int value;
 public:
 
-    CReel(float v):value(v){}
-    float getValue(){
+    CEntier(int v):value(v){}
+    int getValue(){
         return value;
     }
-    std::string getValuetoString(){
-        std::strstream str;
-        str<<value;
-        return str.str();
+    QString getValuetoString(){
+        QString str = "%1";
+        return str.arg(value);
     }
 
     Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
 };
 
-class CRationnel
+class CComplexe : public Constante
+{
+private:
+    int re;
+    int im;
+public:
+
+    CComplexe(int r, int i):re(r), im(i){}
+    int getRe(){
+        return re;
+    }
+    int getIm(){
+        return im;
+    }
+
+    QString getValuetoString(){
+        QString str = "%1 $ %2";
+        return str.arg(re, im);
+    }
+
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
+};
+
+class CReel : public Constante
+{
+private:
+    int ent;
+    int dec;
+
+public:
+
+    CReel(int e, int d):ent(e),dec(d){}
+    int getEnt(){
+        return ent;
+    }
+    int getDec(){
+        return dec;
+    }
+
+    QString getValuetoString(){
+        QString str = "%1,%2";
+        return str.arg(ent, dec);
+    }
+
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
+};
+
+class CRationnel : public Constante
 {
 private:
     int num;
@@ -41,9 +97,7 @@ private:
 public:
 
     CRationnel(int n, int d):num(n), denom(d){}
-    std::string getValuetoString(){
-        return num + "/"+denom;
-    }
+
     int getNum(){
         return num;
     }
@@ -51,7 +105,15 @@ public:
         return denom;
     }
 
+    QString getValuetoString(){
+        QString str = "%1/%2";
+        return str.arg(num, denom);
+    }
+
     Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
 };
 
 

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <pile.h>
+#include <QString>
 
 namespace Ui {
 class Calculatrice;
@@ -20,7 +21,10 @@ class Calculatrice : public QMainWindow
 public:
     explicit Calculatrice(QWidget *parent = 0);
     ~Calculatrice();
-    
+
+    void afficher(QString str);
+
+
 private:
     Ui::Calculatrice *ui;
 };

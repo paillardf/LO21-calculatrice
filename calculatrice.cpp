@@ -13,3 +13,6 @@ Calculatrice::~Calculatrice()
     delete ui;
 }
 
+void Calculatrice::afficher(QString str){
+    ui->pileTxt->setText(str);
+}
