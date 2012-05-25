@@ -72,8 +72,8 @@
       <rect>
        <x>10</x>
        <y>0</y>
-       <width>511</width>
-       <height>125</height>
+       <width>512</width>
+       <height>119</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -511,6 +511,8 @@
       </item>
      </layout>
     </widget>
+    <zorder>horizontalGroupBox</zorder>
+    <zorder>horizontalSpacer</zorder>
    </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
@@ -654,7 +656,7 @@
      <string>Vider</string>
     </property>
     <property name="shortcut">
-     <string>Del</string>
+     <string>Enter, Return</string>
     </property>
    </widget>
    <widget class="QPushButton" name="BtBack">
@@ -670,7 +672,7 @@
      <string>&lt;-</string>
     </property>
     <property name="shortcut">
-     <string>Backspace</string>
+     <string>Enter, Return</string>
     </property>
    </widget>
   </widget>

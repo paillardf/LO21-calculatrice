@@ -1,12 +1,29 @@
 #include "pile.h"
 
-Pile::Pile()
+Pile::Pile(QLabel * aff)
 {
+    affichage = aff;
     tpile = std::stack<Constante*>();
+
+    afficher(tpile);
 }
 
 Pile::~Pile()
 {
+}
+
+
+void Pile::afficher(const std::stack<Constante *>& p){
+    QString txt = "Pile :";
+    std::stack<Constante *> t = p;
+    while(!t.empty())
+    {
+        txt+=t.top()->getValuetoString();
+        t.pop();
+        if(!t.empty())
+            txt+= " , ";
+    }
+affichage->setText(txt);
 }
 
 //void Pile::swap(int x, int y){

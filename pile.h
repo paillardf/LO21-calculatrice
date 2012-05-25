@@ -3,15 +3,23 @@
 
 #include "constante.h"
 #include "stack"
+#include <QLabel>
 
 class Pile
 {
+
+private:
+
     std::stack<Constante*> tpile;
 
-public:
-    Pile();
-    ~Pile();
 
+
+public:
+    Pile(QLabel * aff);
+    ~Pile();
+    QLabel * affichage;
+
+    void afficher(const std::stack<Constante *>& p);
     Constante * pop(){
         Constante * c = tpile.top();
         tpile.pop();

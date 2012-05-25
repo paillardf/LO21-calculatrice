@@ -8,10 +8,10 @@ int main(int argc, char *argv[])
    Calculatrice w;
    w.show();
 
-    Constante* test = new CEntier(8);
-    Constante* test2 = new CEntier(5);
-    //((test->operator+(*test2)).getValuetoString());
-    QString str("TEST");
-    w.afficher(str);
+//    CEntier test = CEntier(8);
+//    CEntier test2 = CEntier(5);
+//    Constante* result = test+test2;
+//    QString str(result->getValuetoString());
+//    w.afficher(str);
     a.exec();
 }
