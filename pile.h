@@ -1,35 +1,25 @@
 #ifndef PILE_H
 #define PILE_H
 
-#include "constante.h"
-#include "stack"
+#include <constante.h>
 #include <QLabel>
-
-class Pile
+#include <QStack>
+#include <cmath>
+class Pile : public QStack<Constante *>
 {
 
 private:
 
-    std::stack<Constante*> tpile;
 
 
 
 public:
-    Pile(QLabel * aff);
+    Pile(QLabel * aff, int max);
     ~Pile();
+    Pile& clone();
     QLabel * affichage;
+    void afficher(int tailleMax);
 
-    void afficher(const std::stack<Constante *>& p);
-    Constante * pop(){
-        Constante * c = tpile.top();
-        tpile.pop();
-        return c;
-    }
-
-    void push(Constante * c){
-        tpile.push(c);
-
-    }
 
 //    void swap(int x, int y);
 //    void sum(int x);

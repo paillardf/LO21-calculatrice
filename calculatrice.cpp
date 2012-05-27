@@ -6,12 +6,13 @@ const QString Calculatrice::AFFICHAGE_NAME = QString("affichage_pile");
 
 Calculatrice::Calculatrice(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Calculatrice)
+    ui(new Ui::Calculatrice),
+    onglet(0)
 {
 
     ui->setupUi(this);
     connect(ui->addTab, SIGNAL(clicked()), this, SLOT(creerTab()));
-
+    connect(ui->nbElementPile, SIGNAL(valueChanged(int)), this, SLOT(afficher(int)));
 
     mapper = new QSignalMapper();
 
@@ -73,12 +74,84 @@ Calculatrice::Calculatrice(QWidget *parent) :
 }
 
 void Calculatrice::analyse(const QString & txt){
+    QString txtTemp = txt;
 
+    while(!txtTemp.isEmpty())
+    {
+        int pos = txtTemp.length()-1;
+        QChar c = txtTemp.at(pos);
+
+        if(c.isDigit()){
+            QString a = getNumber(txtTemp);
+            QString b = "";
+            if(!txtTemp.isEmpty())
+            {
+                c = txtTemp.at(pos);
+                pos = txtTemp.length()-1;
+
+                if(c==','){//NOMBRE A VIRGULE
+                    txtTemp = txtTemp.left(pos);
+                    b=a;
+                    a = getNumber(txtTemp);
+                    pos = txtTemp.length()-1;
+                }
+            }
+
+
+
+            if(ui->radioButton_Reel->isChecked()){
+                Constante *  v = new CReel(a.toInt(),b.toInt());
+                pileActive()->push(v);
+
+
+
+            }else if(ui->radioButton_Entier->isChecked()){
+                QString nombre = a+","+b;
+                pileActive()->push(new CEntier(nombre.toInt()));
+
+            }else if(ui->radioButton_Rationnel->isChecked()){
+               int coef = 0;
+               coef = b.length();
+                a.push_back(b);
+                pileActive()->push(new CRationnel(a.toInt(),pow(10, coef)));
+            }
+
+
+        }
+    }
+    this->pileActive()->afficher(ui->nbElementPile->value());
+    //ui->entreeTxt->setText("FIN");
+}
+
+void Calculatrice::afficher(int max){
+    this->pileActive()->afficher(max);
+}
+
+QString &Calculatrice::getNumber(QString & txt){
+    int pos = txt.length()-1;
+    QChar c = txt.at(pos);
+
+    while(c.isDigit()){
+
+        if(pos>0){
+            pos--;
+        }else{
+            break;
+        }
+        c = txt.at(pos);
+
+    }
+    QString r(txt.right(txt.length()-pos));
+    txt = txt.left(pos);
+    return r;
 }
 
 void Calculatrice::ecrire(const QString & txt){
     QString txtact = ui->entreeTxt->text();
     ui->entreeTxt->setText(txtact+txt);
+    if(!txt[0].isDigit()){
+        this->envoyer();
+    }
 }
 
 void Calculatrice::effacer(){
@@ -89,24 +162,17 @@ void Calculatrice::effacer(){
 
 void Calculatrice::envoyer(){
     QString txt = ui->entreeTxt->text();
-    analyser(txt);
-}
-
-void Calculatrice::afficherPile(const QString & txt){
-    analyser(txt);
-    this->pileActive()->afficher();
+    analyse(txt);
 }
 
 Pile * Calculatrice::pileActive(){
     QLabel *fileNameLabel = ui->tabWidget->currentWidget()->findChild<QLabel *>(AFFICHAGE_NAME);
 
-    std::list<Pile>::const_iterator
-        lit (onglet.begin()),
-        lend(onglet.end());
-    for(;lit!=lend;++lit) {
-        Pile p = (*lit);
-       if(p.affichage==fileNameLabel){
-           return &p;
+
+    for(int i =0; i< onglet.size(); ++i) {
+
+       if(onglet.at(i)->affichage==fileNameLabel){
+           return (onglet.at(i));
        }
     }
 
@@ -122,8 +188,10 @@ void Calculatrice::creerTab(){
       newTab->setLayout(mainLayout);
       ui->tabWidget->addTab( newTab, ( "New tab" ) );
 
-      Pile * nPile = new Pile(fileNameLabel);
-      onglet.push_back( *nPile);
+      Pile * nPile = new Pile(fileNameLabel, ui->nbElementPile->value());
+      onglet.push_back(nPile);
+
+     nPile->afficher(ui->nbElementPile->value());
 
 }
 

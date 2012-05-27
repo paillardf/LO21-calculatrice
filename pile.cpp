@@ -1,11 +1,8 @@
 #include "pile.h"
 
-Pile::Pile(QLabel * aff)
+Pile::Pile(QLabel * aff, int max):affichage(aff)
 {
-    affichage = aff;
-    tpile = std::stack<Constante*>();
-
-    afficher(tpile);
+    afficher(max);
 }
 
 Pile::~Pile()
@@ -13,14 +10,19 @@ Pile::~Pile()
 }
 
 
-void Pile::afficher(const std::stack<Constante *>& p){
+Pile& Pile::clone(){
+  //TODO
+}
+
+void Pile::afficher(int tailleMax){
     QString txt = "Pile :";
-    std::stack<Constante *> t = p;
-    while(!t.empty())
+    for ( int i = 0; i < std::min(size(), tailleMax); i++ )
     {
-        txt+=t.top()->getValuetoString();
-        t.pop();
-        if(!t.empty())
+
+
+        Constante * c = at(i);
+        txt+=c->getValuetoString();
+        if(i<size()-1)
             txt+= " , ";
     }
 affichage->setText(txt);

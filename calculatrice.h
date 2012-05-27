@@ -5,7 +5,7 @@
 #include <pile.h>
 #include <QString>
 #include <QSignalMapper>
-
+#include <cmath>
 namespace Ui {
 class Calculatrice;
 }
@@ -13,7 +13,7 @@ class Calculatrice;
 class Calculatrice : public QMainWindow
 {
     Q_OBJECT
-    std::list<Pile> onglet;
+
 
 
 
@@ -22,18 +22,20 @@ public Q_SLOTS  :
     void ecrire(const QString &a);
     void effacer();
     void envoyer();
+    void afficher(int max);
 
     
 public:
     explicit Calculatrice(QWidget *parent = 0);
     ~Calculatrice();
-
+    std::vector<Pile * > onglet;
 private:
     static const QString AFFICHAGE_NAME;
     Ui::Calculatrice *ui;
     QSignalMapper * mapper;
-    Pile * pileActive();
+    Pile *pileActive();
     void analyse(const QString & txt);
+    QString & getNumber(QString & txt);
 };
 
 #endif // CALCULATRICE_H
