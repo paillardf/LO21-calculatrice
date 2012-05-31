@@ -2,15 +2,18 @@
 #ifndef CONSTANTE_H
 #define CONSTANTE_H
 #include <QString>
-#include <strstream>
 #include <typeinfo>
 
 class Constante
 {
 public:
-   // Constante();
-    virtual QString getValuetoString() = 0;
+    //Constante();
+    virtual QString getValuetoString() const = 0;
     virtual Constante * operator+(Constante & c1) = 0;
+    virtual Constante * operator-(Constante & c1) = 0;
+    virtual Constante * operator*(Constante & c1) = 0;
+    virtual Constante * operator/(Constante & c1) = 0;
+    //~Constante(){}
 
 };
 
@@ -22,71 +25,48 @@ private:
 public:
 
     CEntier(int v):value(v){}
-    int getValue(){
+
+    CEntier(const CEntier & c):value(c.getValue()){}
+    int getValue() const{
         return value;
     }
-    QString getValuetoString(){
-        QString str = "%1";
-        return str.arg(value);
+
+    QString getValuetoString() const{
+        QString test = QString::number(value);
+        return test;
     }
 
-    Constante * operator+(Constante & c1);
-    Constante * operator-(Constante & c1);
-    Constante * operator*(Constante & c1);
-    Constante * operator/(Constante & c1);
-};
-
-class CComplexe : public Constante
-{
-private:
-    int re;
-    int im;
-public:
-
-    CComplexe(int r, int i):re(r), im(i){}
-    int getRe(){
-        return re;
-    }
-    int getIm(){
-        return im;
-    }
-
-    QString getValuetoString(){
-        QString str = "%1 $ %2";
-        return str.arg(re, im);
-    }
-
-    Constante * operator+(Constante & c1);
-    Constante * operator-(Constante & c1);
-    Constante * operator*(Constante & c1);
-    Constante * operator/(Constante & c1);
+    Constante * operator+(Constante & c1){};
+    Constante * operator-(Constante & c1){};
+    Constante * operator*(Constante & c1){};
+    Constante * operator/(Constante & c1){};
+    ~CEntier(){}
 };
 
 class CReel : public Constante
 {
 private:
-    int ent;
-    int dec;
+    double value;
 
 public:
 
-    CReel(int e, int d):ent(e),dec(d){}
-    int getEnt(){
-        return ent;
-    }
-    int getDec(){
-        return dec;
+    CReel(double v):value(v){}
+    CReel(const CReel & c):value(c.getValue()){}
+
+     int getValue() const{
+        return value;
     }
 
-    QString getValuetoString(){
-        QString str = "%1,%2";
-        return str.arg(ent, dec);
+
+    QString getValuetoString()const{
+       return QString::number(value);
     }
 
-    Constante * operator+(Constante & c1);
-    Constante * operator-(Constante & c1);
-    Constante * operator*(Constante & c1);
-    Constante * operator/(Constante & c1);
+    Constante * operator+(Constante & c1){};
+    Constante * operator-(Constante & c1){};
+    Constante * operator*(Constante & c1){};
+    Constante * operator/(Constante & c1){};
+    ~CReel(){}
 };
 
 class CRationnel : public Constante
@@ -97,24 +77,109 @@ private:
 public:
 
     CRationnel(int n, int d):num(n), denom(d){}
-
-    int getNum(){
+    CRationnel(const CRationnel & c):num(c.getNum()), denom(c.getDenom()){}
+    int getNum() const{
         return num;
     }
-    int getDenom(){
+    int getDenom() const{
         return denom;
     }
 
-    QString getValuetoString(){
-        QString str = "%1/%2";
-        return str.arg(num, denom);
+    QString getValuetoString()const{
+        QString test = QString::number(num)+'/'+QString::number(denom);
+        return test;
     }
 
-    Constante * operator+(Constante & c1);
-    Constante * operator-(Constante & c1);
-    Constante * operator*(Constante & c1);
-    Constante * operator/(Constante & c1);
+    Constante * operator+(Constante & c1){};
+    Constante * operator-(Constante & c1){};
+    Constante * operator*(Constante & c1){};
+    Constante * operator/(Constante & c1){};
+    ~CRationnel(){}
 };
+
+
+class CExpression : public Constante
+{
+private:
+    QString exp;
+
+public:
+
+    CExpression(QString ex):exp(ex){}
+    CExpression(const CExpression & c ):exp(c.getExp()){}
+
+    QString getExp() const{
+        return exp;
+    }
+
+    QString getValuetoString() const{
+        return exp;
+    }
+
+    Constante * operator+(Constante & c1){};
+    Constante * operator-(Constante & c1){};
+    Constante * operator*(Constante & c1){};
+    Constante * operator/(Constante & c1){};
+    ~CExpression(){}
+};
+
+
+
+class CComplexe : public Constante
+{
+private:
+    Constante* re;
+    Constante* im;
+public:
+
+    CComplexe(Constante* r, Constante* i){re=r; im=i;}
+    CComplexe(const CComplexe & c){
+        if(typeid(*c.getIm()) ==typeid(CEntier)){
+            im = (Constante *) new CEntier(*((CEntier*) c.getIm()));
+        }else if(typeid(*c.getIm()) ==typeid(CReel)){
+            im = (Constante *) new CReel(*((CReel*) c.getIm()));
+        }else if(typeid(*c.getIm()) ==typeid(CRationnel)){
+            im = (Constante *) new CRationnel(*((CRationnel*) c.getIm()));
+        }else if(typeid(*c.getIm()) ==typeid(CComplexe)){
+           im = (Constante *) new CComplexe(*((CComplexe*) c.getIm()));
+        }else if(typeid(*c.getIm()) ==typeid(CExpression)){
+           im = (Constante *) new CExpression(*((CExpression*) c.getIm()));
+        }
+
+        if(typeid(*c.getRe()) ==typeid(CEntier)){
+            re = (Constante *) new CEntier(*((CEntier*) c.getRe()));
+        }else if(typeid(*c.getRe()) ==typeid(CReel)){
+            re = (Constante *) new CReel(*((CReel*) c.getRe()));
+        }else if(typeid(*c.getRe()) ==typeid(CRationnel)){
+            re = (Constante *) new CRationnel(*((CRationnel*) c.getRe()));
+        }else if(typeid(*c.getRe()) ==typeid(CComplexe)){
+           re = (Constante *) new CComplexe(*((CComplexe*) c.getRe()));
+        }else if(typeid(*c.getRe()) ==typeid(CExpression)){
+           re = (Constante *) new CExpression(*((CExpression*) c.getRe()));
+        }
+
+    }
+
+    ~CComplexe(){delete re; delete im;}
+
+    Constante* getRe() const {
+        return re;
+    }
+    Constante* getIm() const{
+        return im;
+    }
+
+    QString getValuetoString()const{
+        QString test = re->getValuetoString()+'$'+im->getValuetoString();
+        return test;
+    }
+
+    Constante * operator+(Constante & c1){};
+    Constante * operator-(Constante & c1){};
+    Constante * operator*(Constante & c1){};
+    Constante * operator/(Constante & c1){};
+};
+
 
 
 #endif // CONSTANTE_H

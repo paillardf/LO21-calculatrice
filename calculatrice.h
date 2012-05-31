@@ -29,13 +29,20 @@ public:
     explicit Calculatrice(QWidget *parent = 0);
     ~Calculatrice();
     std::vector<Pile * > onglet;
+
 private:
     static const QString AFFICHAGE_NAME;
     Ui::Calculatrice *ui;
     QSignalMapper * mapper;
     Pile *pileActive();
     void analyse(const QString & txt);
+    Constante * getConstante(QString & txtTemp);
     QString & getNumber(QString & txt);
+
+
+
+
+
 };
 
 #endif // CALCULATRICE_H

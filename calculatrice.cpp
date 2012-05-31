@@ -82,45 +82,58 @@ void Calculatrice::analyse(const QString & txt){
         QChar c = txtTemp.at(pos);
 
         if(c.isDigit()){
-            QString a = getNumber(txtTemp);
-            QString b = "";
-            if(!txtTemp.isEmpty())
-            {
-                c = txtTemp.at(pos);
+            Constante *  val = getConstante(txtTemp);
+            if(ui->complexeBox->isChecked()&&!txtTemp.isEmpty()){
                 pos = txtTemp.length()-1;
-
-                if(c==','){//NOMBRE A VIRGULE
-                    txtTemp = txtTemp.left(pos);
-                    b=a;
-                    a = getNumber(txtTemp);
-                    pos = txtTemp.length()-1;
+                c = txtTemp.at(pos);
+                if(c=='$'){
+                    val = new CComplexe(getConstante(txtTemp), val);
                 }
             }
-
-
-
-            if(ui->radioButton_Reel->isChecked()){
-                Constante *  v = new CReel(a.toInt(),b.toInt());
-                pileActive()->push(v);
-
-
-
-            }else if(ui->radioButton_Entier->isChecked()){
-                QString nombre = a+","+b;
-                pileActive()->push(new CEntier(nombre.toInt()));
-
-            }else if(ui->radioButton_Rationnel->isChecked()){
-               int coef = 0;
-               coef = b.length();
-                a.push_back(b);
-                pileActive()->push(new CRationnel(a.toInt(),pow(10, coef)));
-            }
-
-
+            this->pileActive()->push(val);
         }
     }
     this->pileActive()->afficher(ui->nbElementPile->value());
     //ui->entreeTxt->setText("FIN");
+}
+
+Constante * Calculatrice::getConstante(QString & txtTemp){
+
+        QString a = getNumber(txtTemp);
+        QString b = "";
+        if(!txtTemp.isEmpty())
+        {
+            int pos = txtTemp.length()-1;
+            QChar c = txtTemp.at(pos);
+
+
+            if(c==','){//NOMBRE A VIRGULE
+                txtTemp = txtTemp.left(pos);
+                b=a;
+                a = getNumber(txtTemp);
+                pos = txtTemp.length()-1;
+            }
+        }
+
+
+
+        if(ui->radioButton_Reel->isChecked()){
+            QString nombre = a+","+b;
+            return  new CReel(nombre.toDouble());
+
+        }else if(ui->radioButton_Entier->isChecked()){
+            QString nombre = a+","+b;
+            return new CEntier(nombre.toInt());
+
+        }else if(ui->radioButton_Rationnel->isChecked()){
+           int coef = 0;
+           coef = b.length();
+           a.push_back(b);
+           return new CRationnel(a.toInt(),pow(10, coef));
+        }
+
+
+
 }
 
 void Calculatrice::afficher(int max){
@@ -187,13 +200,16 @@ void Calculatrice::creerTab(){
       mainLayout->addWidget(fileNameLabel);
       newTab->setLayout(mainLayout);
       ui->tabWidget->addTab( newTab, ( "New tab" ) );
-
-      Pile * nPile = new Pile(fileNameLabel, ui->nbElementPile->value());
+      Pile * nPile = new Pile(fileNameLabel,ui->radioButton_Entier, ui->radioButton_Rationnel, ui->radioButton_Degre, ui->complexeBox,  ui->nbElementPile->value());
       onglet.push_back(nPile);
 
      nPile->afficher(ui->nbElementPile->value());
 
 }
+
+
+
+
 
 Calculatrice::~Calculatrice()
 {
