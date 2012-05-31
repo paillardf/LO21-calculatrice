@@ -2,6 +2,7 @@
 #ifndef CONSTANTE_H
 #define CONSTANTE_H
 #include <QString>
+#include <QTextStream>
 #include <typeinfo>
 
 class Constante
@@ -46,14 +47,14 @@ public:
 class CReel : public Constante
 {
 private:
-    double value;
+    float value;
 
 public:
 
-    CReel(double v):value(v){}
+    CReel(float v):value(v){}
     CReel(const CReel & c):value(c.getValue()){}
 
-     int getValue() const{
+     float getValue() const{
         return value;
     }
 
@@ -74,16 +75,26 @@ class CRationnel : public Constante
 private:
     int num;
     int denom;
+
+
+    void toFraction(float f, int & n, int & d);
+    int PGCD(int a, int b);
+
 public:
 
     CRationnel(int n, int d):num(n), denom(d){}
     CRationnel(const CRationnel & c):num(c.getNum()), denom(c.getDenom()){}
+    CRationnel(float f){
+
+    }
+
     int getNum() const{
         return num;
     }
     int getDenom() const{
         return denom;
     }
+
 
     QString getValuetoString()const{
         QString test = QString::number(num)+'/'+QString::number(denom);

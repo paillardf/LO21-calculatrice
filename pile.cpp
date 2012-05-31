@@ -52,13 +52,20 @@ void Pile::cast(Constante* & cst){
 
             cst = new CEntier(tmp->getNum()/tmp->getDenom());
         }else {
-            cst = new CReel(tmp->getNum());
+            cst = new CReel(tmp->getNum()/tmp->getDenom());
         }
         delete tmp;
 
     }
     else if(typeid(*cst) ==typeid(CReel) && !(isReel()))
-    {
+    { CReel * tmp = (CReel*) cst;
+        if(isEntier()){
+
+            cst = new CEntier(tmp->getValue());
+        }else {
+            cst = new CRationnel(tmp->getValue());
+        }
+        delete tmp;
 
     }
 

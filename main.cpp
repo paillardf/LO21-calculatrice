@@ -2,6 +2,10 @@
 #include "calculatrice.h"
 #include "iostream"
 
+
+
+
+
 int main(int argc, char *argv[])
 {
    QApplication a(argc, argv);
@@ -13,5 +17,17 @@ int main(int argc, char *argv[])
 //    Constante* result = test+test2;
 //    QString str(result->getValuetoString());
 //    w.afficher(str);
+
+//   int i ,j;
+//   toFraction(3.897 ,i , j);
+
+//  qDebug()<< "Resultat = "<<i<<"/"<<j;
+
+
     a.exec();
+
+
+
 }
+
+

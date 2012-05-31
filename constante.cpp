@@ -3,6 +3,55 @@
 #include "math.h"
 #include <sstream>
 
+
+int CRationnel::PGCD(int a, int b){
+    while(b!=0){
+        int c=a%b;
+        a=b;
+        b=c;
+    }
+    return a;
+}
+
+void CRationnel::toFraction(float f, int & n, int & d){
+    QString s;
+    QTextStream * tmp = new QTextStream(&s);
+    tmp->operator <<(f);
+    int cmpt= -1;
+    int lenght = s.size();
+    for (int i = 0; i < lenght; i++){
+        if(s.at(i)=='.'){
+            cmpt = 0;
+        }else if(cmpt>=0){
+            cmpt++;
+        }
+
+    }
+    if(cmpt>=0){
+        n = f * powf(10, cmpt);
+        d = 1* powf(10, cmpt);
+        int r=PGCD(n,d);
+        while(r!=1){
+
+             n=n/r;
+             d=d/r;
+             r=PGCD(n,d);
+        }
+
+        //pas de - au dénominateur
+        if(d<0){
+            n=-n;
+            d=-d;
+            }
+    }else{
+
+        n = f;
+        d = 1;
+    }
+
+}
+
+
 //Constante * CEntier::operator+(Constante& c){
 //    if(typeid(c) == typeid(CEntier)){
 //            CEntier &c1 = (CEntier&) c;
