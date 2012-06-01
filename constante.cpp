@@ -27,7 +27,24 @@ void CRationnel::toFraction(float f, int & n, int & d){
         }
 
     }
-    if(cmpt>=0){
+    if(cmpt>=5){
+        double nn;
+        nn = f * powf(10, cmpt);
+        d = 1* powf(10, cmpt);
+        int r=PGCD(nn,d);
+        while(r!=1){
+
+             nn =nn/r;
+             d=d/r;
+             r=PGCD(n,d);
+        }
+
+        //pas de - au dénominateur
+        if(d<0){
+            n=-nn;
+            d=-d;
+            }
+    }else if(cmpt>=0){
         n = f * powf(10, cmpt);
         d = 1* powf(10, cmpt);
         int r=PGCD(n,d);
@@ -51,220 +68,260 @@ void CRationnel::toFraction(float f, int & n, int & d){
 
 }
 
-
-//Constante * CEntier::operator+(Constante& c){
-//    if(typeid(c) == typeid(CEntier)){
-//            CEntier &c1 = (CEntier&) c;
-//            return (Constante *) new CEntier(c1.getValue()+this->getValue());
-//    }
-//    else {
-//        Constante* test = this;
-//        return c.operator+(*test);}
-//    }
-
-//Constante * CRationnel::operator+(Constante & c){
-//    if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CRationnel(c1.getNum()*denom+c1.getDenom()*num, denom*c1.getDenom());
-//    }
-//    else if(typeid(c) ==typeid(CEntier)){
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CRationnel(getNum()+getDenom()*c1.getValue(), getDenom());
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
-
-// }
-
-//Constante * CReel::operator+(Constante & c){
-//    if(typeid(c) == typeid(CReel)){
-//            CReel &c1 = (CReel&) c;
-//            int test = std::max((int)(1 + log10(c1.getDec())),(int)(1 + log10(getDec())));
-//            int nouv = (int)(1+log10(c1.getDec()+this->getDec()));
-//            if(nouv>test){
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt()+1,c1.getDec()+this->getDec()-100);
-//            }
-//            else{
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec());
-
-//            }
-//    }
-//    else if(typeid(c) == typeid(CEntier))
-//    {
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getValue(), getDec());
-//    }
-//    else if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        double test = (double)(c1.getNum())/(double)(c1.getDenom());
-//        int partieEntiere = (int) test;
-//        double partieDecimal = test;
-//        partieDecimal *= 100;
-//        partieDecimal = partieDecimal - (partieEntiere * 100);
-//        return (Constante *)new CReel(partieEntiere+getEnt(), getDec()+(int)partieDecimal);
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
-// }
-
-/*Constante * CComplexe::operator+(Constante & c){
-    if(typeid(c) ==typeid(CEntier)){
-        CEntier &c1 = (CEntier&) c;
-        return (Constante *)new CComplexe((Constante *) new CEntier(c1.getValue()+getRe()),(Constante *) new CEntier(getIm()));
-
+Constante * CEntier::operator+(Constante& c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CEntier(c1.getValue()+this->getValue());
     }
+    else {
+        Constante* test = this;
+        return c.operator+(*test);}
+    }
+
+Constante * CRationnel::operator+(Constante & c){
     if(typeid(c) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) c;
-        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
-
+        return (Constante *)new CRationnel(c1.getNum()*denom+c1.getDenom()*num, denom*c1.getDenom());
     }
-    if(typeid(c) ==typeid(CReel)){
-        CReel &c1 = (CReel&) c;
-        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
-
-    }
-    if(typeid(c) ==typeid(CComplexe)){
-        CComplexe &c1 = (CComplexe&) c;
-        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
-
-    }
-    else{ return c.operator +(this);}
- }*/
-
-//Constante * CExpression::operator+(Constante & c){
-//    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString()+' '+'+'));
-// }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Constante * CEntier::operator-(Constante& c){
-//    if(typeid(c) == typeid(CEntier)){
-//            CEntier &c1 = (CEntier&) c;
-//            return (Constante *) new CEntier(c1.getValue()-this->getValue());
-//    }
-//    else {
-//        Constante* test = this;
-//        return c.operator-(*test);}
-//    }
-
-//Constante * CRationnel::operator-(Constante & c){
-//    if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CRationnel(c1.getNum()*denom+c1.getDenom()*num, denom+c1.getDenom());
-//    }
-//    else if(typeid(c) ==typeid(CEntier)){
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CRationnel(getNum()+getDenom()*c1.getValue(), getDenom());
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
-
-// }
-
-//Constante * CReel::operator-(Constante & c){
-//    if(typeid(c) == typeid(CReel)){
-//            CReel &c1 = (CReel&) c;
-//            int test = std::max(1 + log10(c1.getDec()),1 + log10(getDec()));
-//            if(1+log10(c1.getDec()+this->getDec())>test){
-
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec()); //problème
-//            }
-//            else{
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec());
-//            }
-//    }
-//    else if(typeid(c) == typeid(CEntier))
-//    {
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getValue(), getDec());
-//    }
-//    else if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getNum(), getDec()); //problème
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
-// }
-
-/*Constante * CComplexe::operator-(Constante & c){
-    if(typeid(c) ==typeid(CEntier)){
+    else if(typeid(c) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) c;
-        return (Constante *)new CComplexe((Constante *) new CEntier(c1.getValue()+getRe()),(Constante *) new CEntier(getIm()));
-
+        return (Constante *)new CRationnel(getNum()+getDenom()*c1.getValue(), getDenom());
     }
-    if(typeid(c) ==typeid(CRationnel)){
+    else{ Constante* test = this;
+        return c.operator+(*test);}
+
+ }
+
+Constante * CReel::operator+(Constante & c){
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            return (Constante *) new CReel(c1.getValue()+getValue());
+    }
+    else if(typeid(c) == typeid(CEntier))
+    {
+        CEntier &c1 = (CEntier&) c;
+        return (Constante *)new CReel(getValue()+(float)c1.getValue());
+    }
+    else if(typeid(c) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) c;
-        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
-
+        double test = (double)((float)c1.getNum())/(double)(c1.getDenom());
+        return (Constante *)new CReel(test+getValue());
     }
-    if(typeid(c) ==typeid(CReel)){
-        CReel &c1 = (CReel&) c;
-        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
+    else{ Constante* test = this;
+        return c.operator+(*test);}
+ }
 
-    }
-    if(typeid(c) ==typeid(CComplexe)){
-        CComplexe &c1 = (CComplexe&) c;
-        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
+//Constante * CComplexe::operator+(Constante & c){
+//    if(typeid(c) ==typeid(CEntier)){
+//        CEntier &c1 = (CEntier&) c;
+//        return (Constante *)new CComplexe(this->operator +(c1),getIm());
 
-    }
-    else{ return c.operator +(this);}
- }*/
+//    }
+//  if(typeid(c) ==typeid(CRationnel)){
+//        CRationnel &c1 = (CRationnel&) c;
+//        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
 
-//Constante * CExpression::operator-(Constante & c){
-//    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString()+' '+'-'));
+//    }
+//    if(typeid(c) ==typeid(CReel)){
+//        CReel &c1 = (CReel&) c;
+//        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
 
+//    }
+//    if(typeid(c) ==typeid(CComplexe)){
+//        CComplexe &c1 = (CComplexe&) c;
+//        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
+
+//    }
+//    else{ return c.operator +(this);}
 // }
+
+Constante * CExpression::operator+(Constante & c){
+    return (Constante *)new CExpression('+'+' '+QString(getExp()+' '+c.getValuetoString()));
+ }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-//Constante * CEntier::operator/(Constante& c){
-//    if(typeid(c) == typeid(CEntier)){
-//            CEntier &c1 = (CEntier&) c;
-//            return (Constante *) new CEntier(c1.getValue()/this->getValue());
-//    }
-//    else {
-//        Constante* test = this;
-//        return c.operator+(*test);}
-//    }
+Constante * CEntier::operator-(Constante& c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CEntier(getValue()-c1.getValue());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            c1.setNum(-1*c1.getNum());
+            return c1.operator +(*this);
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            c1.setValue(-1*getValue());
+            return c1.operator +(*this);
+    }
+   /* if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(getValue()-c1.getRe(),c1.getIm());
+    }*/
+   if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator -((Constante & ) *this);
+    }
+}
 
-//Constante * CRationnel::operator/(Constante & c){
-//    if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CRationnel(c1.getNum()*denom+c1.getDenom()*num, denom+c1.getDenom());
-//    }
-//    else if(typeid(c) ==typeid(CEntier)){
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CRationnel(getNum()+getDenom()*c1.getValue(), getDenom());
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
+Constante * CRationnel::operator-(Constante & c){
 
-// }
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CRationnel(getNum()-c1.getValue()*getDenom(),getDenom());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            return (Constante *) new CRationnel(getNum()*c1.getDenom()-c1.getNum()*getDenom(),getDenom()*c1.getDenom());
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            c1.setValue(-1*c1.getValue());
+            return c1.operator +(*this);
+    }
+   /* if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+    }*/
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator-((Constante & ) *this);
+    }
 
-//Constante * CReel::operator/(Constante & c){
-//    if(typeid(c) == typeid(CReel)){
-//            CReel &c1 = (CReel&) c;
-//            int test = std::max(1 + log10(c1.getDec()),1 + log10(getDec()));
-//            if(1+log10(c1.getDec()+this->getDec())>test){
+ }
 
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec()); //problème
-//            }
-//            else{
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec());
-//            }
-//    }
-//    else if(typeid(c) == typeid(CEntier))
-//    {
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getValue(), getDec());
-//    }
-//    else if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getNum(), getDec()); //problème
-//    }
-//    else{ Constante* test = this;
-//        return c.operator+(*test);}
-// }
+Constante * CReel::operator-(Constante & c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CReel(getValue()-(float)c1.getValue());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            float test = getValue() - (float)c1.getNum()/(float)c1.getDenom();
+            return (Constante *) new CReel(test);
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            return (Constante *) new CReel(getValue()-c1.getValue());
+    }
+    /*if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+    }*/
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator -((Constante & ) *this);
+    }
+ }
+
+/*Constante * CComplexe::operator-(Constante & c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CEntier(c1.getValue()-this->getValue());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            return (Constante *) new CRationnel(c1.getValue()-this->getValue());
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            return (Constante *) new CReel(c1.getValue()-this->getValue());
+    }
+    if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+    }
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return (Constante *) new CExpression(c1.getValue()-this->getValue());
+    }
+    }
+ }*/
+
+Constante * CExpression::operator-(Constante & c){
+    return (Constante *)new CExpression(QString('-'+' '+getExp()+' '+c.getValuetoString()));
+
+ }
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Constante * CEntier::operator/(Constante& c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CEntier((int)(getValue()/c1.getValue()));
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            int inter = c1.getNum();
+            c1.setNum(c1.getDenom());
+            c1.setDenom(inter);
+            return c1.operator *(*this);
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            c1.setValue(1/c1.getValue());
+            return c1.operator *(*this);
+    }
+   /* if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(getValue()-c1.getRe(),c1.getIm());
+    }*/
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator -((Constante & ) *this);
+    }
+    }
+
+Constante * CRationnel::operator/(Constante & c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CRationnel(getNum(),getDenom()*c1.getValue());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            return (Constante *) new CRationnel(getNum()*c1.getDenom(),getDenom()*c1.getNum());
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            c1.setValue(1/c1.getValue());
+            return c1.operator *(*this);
+    }
+   /* if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+    }*/
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator -((Constante & ) *this);
+    }
+
+ }
+
+Constante * CReel::operator/(Constante & c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CReel(getValue()/(float)c1.getValue());
+    }
+    if(typeid(c) == typeid(CRationnel)){
+            CRationnel &c1 = (CRationnel&) c;
+            float test = (getValue() * (float)c1.getDenom())/(float)c1.getNum();
+            return (Constante *) new CReel(test);
+    }
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
+            return (Constante *) new CReel(getValue()/c1.getValue());
+    }
+    /*if(typeid(c) == typeid(CComplexe)){
+            CComplexe &c1 = (CComplexe&) c;
+            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+    }*/
+    if(typeid(c) == typeid(CExpression)){
+            CExpression &c1 = (CExpression&) c;
+            return c1.operator /((Constante & ) *this);
+    }
+ }
 
 /*Constante * CComplexe::operator/(Constante & c){
     if(typeid(c) ==typeid(CEntier)){
@@ -290,79 +347,60 @@ void CRationnel::toFraction(float f, int & n, int & d){
     else{ return c.operator +(this);}
  }*/
 
-//Constante * CExpression::operator/(Constante & c){
-//    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString()+' '+'/'));
 
-// }
+Constante * CExpression::operator/(Constante & c){
+    return (Constante *)new CExpression('/' +' '+ QString(getExp()+' '+c.getValuetoString()));
+}
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
 
-//Constante * CEntier::operator*(Constante& c){
-//    if(typeid(c) == typeid(CEntier)){
-//            CEntier &c1 = (CEntier&) c;
-//            return (Constante *) new CEntier(c1.getValue()*this->getValue());
-//    }
-//    else {
-//        Constante* test = this;
-//        return c.operator*(*test);}
-//    }
+Constante * CEntier::operator*(Constante& c){
+    if(typeid(c) == typeid(CEntier)){
+            CEntier &c1 = (CEntier&) c;
+            return (Constante *) new CEntier(c1.getValue()*this->getValue());
+    }
+    else {
+        Constante* test = this;
+        return c.operator*(*test);}
+    }
 
-//Constante * CRationnel::operator*(Constante & c){
-//    if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CRationnel(c1.getNum()*num, denom*c1.getDenom());
-//    }
-//    else if(typeid(c) ==typeid(CEntier)){
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CRationnel(getNum()*c1.getValue(), getDenom());
-//    }
-//    else{ Constante* test = this;
-//        return c.operator*(*test);}
+Constante * CRationnel::operator*(Constante & c){
+    if(typeid(c) ==typeid(CRationnel)){
+        CRationnel &c1 = (CRationnel&) c;
+        return (Constante *)new CRationnel(c1.getNum()*num, denom*c1.getDenom());
+    }
+    else if(typeid(c) ==typeid(CEntier)){
+        CEntier &c1 = (CEntier&) c;
+        return (Constante *)new CRationnel(getNum()*c1.getValue(), getDenom());
+    }
+    else{ Constante* test = this;
+        return c.operator*(*test);}
 
-// }
+ }
 
-//Constante * CReel::operator*(Constante & c){
-//    if(typeid(c) == typeid(CReel)){
-//            CReel &c1 = (CReel&) c;
-//            int test = std::max(1 + log10(c1.getDec()),1 + log10(getDec()));
-//            if(1+log10(c1.getDec()+this->getDec())>test){
+Constante * CReel::operator*(Constante & c){
+    if(typeid(c) == typeid(CReel)){
+            CReel &c1 = (CReel&) c;
 
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec()); //problème
-//            }
-//            else{
-//                return (Constante *) new CReel(c1.getEnt()+this->getEnt(),c1.getDec()+this->getDec());
-//            }
-//    }
-//    else if(typeid(c) == typeid(CEntier))
-//    {
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CReel(getEnt()+c1.getValue(), getDec());
-//    }
-//    else if(typeid(c) ==typeid(CRationnel)){
+            return (Constante *) new CReel(c1.getValue()*getValue());
 
-//        CRationnel &c1 = (CRationnel&) c;
+    }
+    else if(typeid(c) == typeid(CEntier))
+    {
+        CEntier &c1 = (CEntier&) c;
+        return (Constante *)new CReel(getValue()*c1.getValue());
+    }
+    else if(typeid(c) ==typeid(CRationnel)){
 
+        CRationnel &c1 = (CRationnel&) c;
 
-//        std::ostringstream oss;
-//        oss << getEnt()+'.'+getDec();
-//        std::string result = oss.str();
+        double test = (getValue()*c1.getNum())/c1.getDenom();
 
-//        std::istringstream iss( result );
-//        double nombre;
-//        iss >> nombre;
-
-//        double test = (double)(c1.getNum())/(double)(c1.getDenom());
-//        int partieEntiere = (int) test;
-//        double partieDecimal = test;
-//        partieDecimal *= 100;
-//        partieDecimal = partieDecimal - (partieEntiere * 100);
-
-
-//        return (Constante *)new CReel(getEnt()+c1.getNum(), getDec()); //problème
-//    }
-//    else{ Constante* test = this;
-//        return c.operator*(*test);} //problème
-// }
+        return (Constante *)new CReel(test);
+    }
+    else{ Constante* test = this;
+        return c.operator*(*test);}
+ }
 
 /*Constante * CComplexe::operator*(Constante & c){
     if(typeid(c) ==typeid(CEntier)){
@@ -388,9 +426,8 @@ void CRationnel::toFraction(float f, int & n, int & d){
     else{ return c.operator +(this);}
  }*/
 
-//Constante * CExpression::operator*(Constante & c){
-//    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString()+' '+'*'));
+Constante * CExpression::operator*(Constante & c){
+    return (Constante *)new CExpression('* '+QString(getExp()+' '+c.getValuetoString()));
 
-// }
-
+ }
 //////////////////////////////////////////////////////////////////////////////////////////////

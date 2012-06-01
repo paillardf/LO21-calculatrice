@@ -6,6 +6,9 @@
 #include <QString>
 #include <QSignalMapper>
 #include <cmath>
+#include <QMessageBox>
+#include <QDebug>
+
 namespace Ui {
 class Calculatrice;
 }
@@ -23,7 +26,8 @@ public Q_SLOTS  :
     void effacer();
     void envoyer();
     void afficher(int max);
-
+    void annuler();
+    void retablir();
     
 public:
     explicit Calculatrice(QWidget *parent = 0);
@@ -38,7 +42,6 @@ private:
     void analyse(const QString & txt);
     Constante * getConstante(QString & txtTemp);
     QString & getNumber(QString & txt);
-
 
 
 

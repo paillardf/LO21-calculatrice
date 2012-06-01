@@ -1,7 +1,7 @@
 #ifndef COMMANDE_H
 #define COMMANDE_H
 #include <constante.h>
-#include <pile.h>
+#include <QStack>
 
 
 //http://www.csharpfr.com/tutoriaux/COMMAND-PATTERN_824.aspx
@@ -17,28 +17,56 @@ public:
 };
 
 
-class CommandeAdd : public Commande
+class CommandeBasic : public Commande
 {
 private:
-    Constante * cst1;
-    Constante *  cst2;
-    Pile & pile;
+    QStack<Constante *> newConst;
+    QStack<Constante *>  oldConst;
+    QStack<Constante *> * pile;
 
 public:
-    CommandeAdd(Pile &p):pile(p){}
+    CommandeBasic(QStack<Constante *> * p):pile(p){}
 
-    ~CommandeAdd(){
-        delete(cst1);
-        delete(cst2);
+    ~CommandeBasic(){
+        while(!newConst.isEmpty()){
+            Constante * c = newConst.pop();
+            delete c;
+        }
+
+        while(!oldConst.isEmpty()){
+            Constante * c = oldConst.pop();
+            delete c;
+        }
+    }
+
+    void addOld(Constante * c){//ANCIENNE CONSTANTE SUR LA PILE
+        oldConst.push(c);
+    }
+    void addNew(Constante * c){ //NOUVELLE CONSTANTE SUR LA PILE AJOUTE
+        newConst.push(c);
     }
 
     void Do(){
+        for (int i = 0; i < oldConst.size(); i ++){
+            pile->pop();
+        }
 
-        Constante * res = *cst1+*cst2;
-        pile.push(res);
+        for (int i = 0; i < newConst.size(); i ++){
+            pile->push(newConst.at(i));
+        }
+
+
     }
 
     void Undo(){
+        for (int i = 0; i < newConst.size(); i ++){
+            pile->pop();
+        }
+
+        for (int i = oldConst.size()-1; i >= 0; i --){
+            pile->push(oldConst.at(i));
+        }
+
     }
 
 };

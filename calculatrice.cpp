@@ -13,7 +13,8 @@ Calculatrice::Calculatrice(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->addTab, SIGNAL(clicked()), this, SLOT(creerTab()));
     connect(ui->nbElementPile, SIGNAL(valueChanged(int)), this, SLOT(afficher(int)));
-
+    connect(ui->actionAnnuler, SIGNAL(triggered()), this , SLOT(annuler()));
+    connect(ui->actionRetablir, SIGNAL(triggered()), this , SLOT(retablir()));
     mapper = new QSignalMapper();
 
     connect(ui->BtBack, SIGNAL(clicked()), this, SLOT(effacer()));
@@ -48,7 +49,7 @@ Calculatrice::Calculatrice(QWidget *parent) :
     connect(ui->BtVirgule, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtVirgule, ",");
     connect(ui->BtSigne, SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(ui->BtSigne, "NEG");
+    mapper->setMapping(ui->BtSigne, "INV");
     connect(ui->BtMult, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtMult, "*");
     connect(ui->BtDiv, SIGNAL(clicked()), mapper, SLOT(map()));
@@ -64,14 +65,60 @@ Calculatrice::Calculatrice(QWidget *parent) :
     mapper->setMapping(ui->BtFactoriel, "!");
     connect(ui->BtModulo, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtModulo, "%");
-
+    connect(ui->BtPuissance, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtPuissance, "^");
+    connect(ui->BtSIN, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSIN, "SIN");
+    connect(ui->BtSINH, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSINH, "SINH");
+    connect(ui->BtCOSH, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtCOSH, "COSH");
+    connect(ui->BtCOS, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtCOS, "COS");
+    connect(ui->BtTAN, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtTAN, "TAN");
+    connect(ui->BtTANH, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtTANH, "TANH");
+    connect(ui->BtLN, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtLN, "LN");
+    connect(ui->BtLOG, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtLN, "LOG");
+    connect(ui->BtSQR, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSQR, "SQR");
+    connect(ui->BtSQRT, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSQRT, "SQRT");
+    connect(ui->BtCUBE, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtCUBE, "CUBE");
+//OPERATION SUR LA PILE
+    connect(ui->BtDUP, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtDUP, "DUP");
+    connect(ui->BtDROP, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtDROP, "DROP");
+    connect(ui->BtSWAP, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSWAP, "SWAP");
+    connect(ui->BtSUM, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtSUM, "SUM");
+    connect(ui->BtMEAN, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtMEAN, "MEAN");
+    connect(ui->BtCLEAR, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtCLEAR, "CLEAR");
 
     connect(mapper, SIGNAL(mapped(const QString &)), this, SLOT(ecrire(const QString &)));
     creerTab();
 
-
-
 }
+
+// GESTION DES ERREURS : QMessageBox::critical( 0, "Exception", "ex.what()", "Ok" );
+
+//try
+//    {
+//        // std::logic_error hérite de std::exception
+//        throw logic_error( "exception de test" );
+//    }
+//    catch ( exception e ) // traitement par valeur
+//    {
+//        cerr << e.what();
+//    }
 
 void Calculatrice::analyse(const QString & txt){
     QString txtTemp = txt;
@@ -81,7 +128,7 @@ void Calculatrice::analyse(const QString & txt){
         int pos = txtTemp.length()-1;
         QChar c = txtTemp.at(pos);
 
-        if(c.isDigit()){
+        if(c.isDigit()||txtTemp.right(1)=="'"){
             Constante *  val = getConstante(txtTemp);
             if(ui->complexeBox->isChecked()&&!txtTemp.isEmpty()){
                 pos = txtTemp.length()-1;
@@ -91,53 +138,156 @@ void Calculatrice::analyse(const QString & txt){
                 }
             }
             this->pileActive()->push(val);
+        }else{
+
+
+            if(c=='+'){
+
+                pileActive()->fAddition();
+                txtTemp = txtTemp.left(pos);
+            }else if(c==' '){
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='-'){
+                pileActive()->fSoustraction();
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='*'){
+                pileActive()->fMultiplication();
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='/'){
+                pileActive()->fDivision();
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='^'){
+                pileActive()->fPOW();
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='%'){
+                pileActive()->fMOD();
+                txtTemp = txtTemp.left(pos);
+            }else if(c=='!'){
+                pileActive()->fact();
+                txtTemp = txtTemp.left(pos);
+            }else if(txtTemp.right(4).compare("CUBE")==0){
+                pileActive()->fCUBE();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(4).compare("SQRT")==0){
+                pileActive()->fSQRT();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(3).compare("SQR")==0){
+                pileActive()->fSQR();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(4).compare("SINH")==0){
+                pileActive()->fSINH();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(3).compare("SIN")==0){
+                pileActive()->fSIN();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(4).compare("COSH")==0){
+                pileActive()->fCOSH();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(3).compare("COS")==0){
+                pileActive()->fCOS();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(4).compare("TANH")==0){
+                pileActive()->fTANH();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(3).compare("TAN")==0){
+                pileActive()->fTAN();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(2).compare("LN")==0){
+                pileActive()->fLN();
+                txtTemp = txtTemp.left(pos-1);
+            }else if(txtTemp.right(3).compare("LOG")==0){
+                pileActive()->fLOG();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(3).compare("INV")==0){
+                pileActive()->fINV();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(4).compare("SWAP")==0){
+                pileActive()->swap();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(3).compare("DUP")==0){
+                pileActive()->dup();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(3).compare("SUM")==0){
+                pileActive()->sum();
+                txtTemp = txtTemp.left(pos-2);
+            }else if(txtTemp.right(4).compare("DROP")==0){
+                pileActive()->drop();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(4).compare("MEAN")==0){
+                pileActive()->mean();
+                txtTemp = txtTemp.left(pos-3);
+            }else if(txtTemp.right(5).compare("CLEAR")==0){
+                pileActive()->clear();
+                txtTemp = txtTemp.left(pos-4);
+            }else{
+
+                //ERREUR
+
+            }
+
+
         }
+
     }
     this->pileActive()->afficher(ui->nbElementPile->value());
     //ui->entreeTxt->setText("FIN");
 }
 
+
 Constante * Calculatrice::getConstante(QString & txtTemp){
+
+    if(txtTemp.right(1).compare("'")==0){
+       int taille = txtTemp.size();
+       txtTemp = txtTemp.left(taille-1);
+       int pos = txtTemp.lastIndexOf("'");
+       if(pos==-1){
+           //ERREUR EXPRESSION NON FERMEE
+
+       }else{
+           txtTemp = txtTemp.left(pos);
+           return new CExpression(txtTemp.right(taille-1-pos));
+
+       }
+    }else{
+
 
         QString a = getNumber(txtTemp);
         QString b = "";
+
         if(!txtTemp.isEmpty())
         {
-            int pos = txtTemp.length()-1;
-            QChar c = txtTemp.at(pos);
+
+            if(a[0]==','){//NOMBRE A VIRGULE
 
 
-            if(c==','){//NOMBRE A VIRGULE
-                txtTemp = txtTemp.left(pos);
                 b=a;
-                a = getNumber(txtTemp);
-                pos = txtTemp.length()-1;
+                QString c = getNumber(txtTemp);
+                a =c;
+                QString nombre = a+b;
+                return  new CReel(nombre.toFloat());
             }
         }
 
+            return new CEntier(a.toInt());
 
-
-        if(ui->radioButton_Reel->isChecked()){
-            QString nombre = a+","+b;
-            return  new CReel(nombre.toDouble());
-
-        }else if(ui->radioButton_Entier->isChecked()){
-            QString nombre = a+","+b;
-            return new CEntier(nombre.toInt());
-
-        }else if(ui->radioButton_Rationnel->isChecked()){
-           int coef = 0;
-           coef = b.length();
-           a.push_back(b);
-           return new CRationnel(a.toInt(),pow(10, coef));
-        }
-
-
+    }
 
 }
 
 void Calculatrice::afficher(int max){
     this->pileActive()->afficher(max);
+}
+
+void Calculatrice::annuler(){
+     Pile * p = pileActive();
+     p->annuler();
+     p->afficher(ui->nbElementPile->value());
+}
+
+void Calculatrice::retablir(){
+    Pile * p = pileActive();
+    p->retablir();
+    p->afficher(ui->nbElementPile->value());
 }
 
 QString &Calculatrice::getNumber(QString & txt){
@@ -155,6 +305,7 @@ QString &Calculatrice::getNumber(QString & txt){
 
     }
     QString r(txt.right(txt.length()-pos));
+
     txt = txt.left(pos);
     return r;
 }
@@ -162,7 +313,7 @@ QString &Calculatrice::getNumber(QString & txt){
 void Calculatrice::ecrire(const QString & txt){
     QString txtact = ui->entreeTxt->text();
     ui->entreeTxt->setText(txtact+txt);
-    if(!txt[0].isDigit()){
+    if(!ui->entreeTxt->text()[0].isDigit()&&!(ui->entreeTxt->text()[0] == ',') && !(ui->entreeTxt->text().indexOf("'")!=-1) ){ //TODO verifier si pas de '
         this->envoyer();
     }
 }
@@ -176,11 +327,12 @@ void Calculatrice::effacer(){
 void Calculatrice::envoyer(){
     QString txt = ui->entreeTxt->text();
     analyse(txt);
+    ui->entreeTxt->clear();
+
 }
 
 Pile * Calculatrice::pileActive(){
     QLabel *fileNameLabel = ui->tabWidget->currentWidget()->findChild<QLabel *>(AFFICHAGE_NAME);
-
 
     for(int i =0; i< onglet.size(); ++i) {
 
@@ -203,7 +355,13 @@ void Calculatrice::creerTab(){
       Pile * nPile = new Pile(fileNameLabel,ui->radioButton_Entier, ui->radioButton_Rationnel, ui->radioButton_Degre, ui->complexeBox,  ui->nbElementPile->value());
       onglet.push_back(nPile);
 
+      Pile * pAct =  pileActive();
+      if(pAct!=nPile){
+              pileActive()->clone(*nPile);
+      }
+
      nPile->afficher(ui->nbElementPile->value());
+     ui->tabWidget->setCurrentWidget(newTab);
 
 }
 

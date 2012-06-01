@@ -1,12 +1,16 @@
 #ifndef PILE_H
 #define PILE_H
 
+#include <commande.h>
 #include <constante.h>
 #include <QLabel>
 #include <QCheckBox>
 #include <QRadioButton>
 #include <QStack>
+#include <QDebug>
 #include <cmath>
+#include <stdexcept>
+
 
 class Pile : public QStack<Constante *>
 {
@@ -18,6 +22,10 @@ private:
     QRadioButton * btDegre;
     QCheckBox * btComplexe;
 
+    QStack<Commande *> listeCommande;
+    bool executionCommande;
+    int posCommande;
+    void saveCommande(Commande *c);
 
     bool isRadian(){ return !btDegre->isChecked();}
     bool isDegre(){ return btDegre->isChecked();}
@@ -29,14 +37,16 @@ private:
 public:
     Pile(QLabel * aff, QRadioButton * _btEntier,QRadioButton * _btRationnel,QRadioButton * _btDegre,QCheckBox * _btComplexe, int max);
     ~Pile();
-    Pile& clone();
+    Pile& clone(Pile &p) const;
     QLabel * affichage;
     void cast(Constante* & cst);
     void afficher(int tailleMax);
+    void annuler();
+    void retablir();
 
-        void swap(int x, int y);
-        void sum(int x);
-        void mean(int x);
+        void swap();
+        void sum();
+        void mean();
         void clear();
         void dup();
         void drop();

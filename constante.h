@@ -14,7 +14,7 @@ public:
     virtual Constante * operator-(Constante & c1) = 0;
     virtual Constante * operator*(Constante & c1) = 0;
     virtual Constante * operator/(Constante & c1) = 0;
-    //~Constante(){}
+    ~Constante() {}
 
 };
 
@@ -28,19 +28,24 @@ public:
     CEntier(int v):value(v){}
 
     CEntier(const CEntier & c):value(c.getValue()){}
+
     int getValue() const{
         return value;
     }
+
+    void setValue(int e){
+         value=e;
+     }
 
     QString getValuetoString() const{
         QString test = QString::number(value);
         return test;
     }
 
-    Constante * operator+(Constante & c1){};
-    Constante * operator-(Constante & c1){};
-    Constante * operator*(Constante & c1){};
-    Constante * operator/(Constante & c1){};
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
     ~CEntier(){}
 };
 
@@ -58,15 +63,18 @@ public:
         return value;
     }
 
+     void setValue(float e){
+          value=e;
+      }
 
     QString getValuetoString()const{
        return QString::number(value);
     }
 
-    Constante * operator+(Constante & c1){};
-    Constante * operator-(Constante & c1){};
-    Constante * operator*(Constante & c1){};
-    Constante * operator/(Constante & c1){};
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
     ~CReel(){}
 };
 
@@ -85,7 +93,7 @@ public:
     CRationnel(int n, int d):num(n), denom(d){}
     CRationnel(const CRationnel & c):num(c.getNum()), denom(c.getDenom()){}
     CRationnel(float f){
-
+        toFraction(f, num, denom);
     }
 
     int getNum() const{
@@ -95,16 +103,22 @@ public:
         return denom;
     }
 
+    void setNum(int e){
+        num=e;
+    }
+    void setDenom(int e){
+        denom =e;
+    }
 
     QString getValuetoString()const{
         QString test = QString::number(num)+'/'+QString::number(denom);
         return test;
     }
 
-    Constante * operator+(Constante & c1){};
-    Constante * operator-(Constante & c1){};
-    Constante * operator*(Constante & c1){};
-    Constante * operator/(Constante & c1){};
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
     ~CRationnel(){}
 };
 
@@ -122,15 +136,17 @@ public:
     QString getExp() const{
         return exp;
     }
-
+    void setExp(QString e){
+         exp=e;
+    }
     QString getValuetoString() const{
         return exp;
     }
 
-    Constante * operator+(Constante & c1){};
-    Constante * operator-(Constante & c1){};
-    Constante * operator*(Constante & c1){};
-    Constante * operator/(Constante & c1){};
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
     ~CExpression(){}
 };
 
@@ -185,10 +201,10 @@ public:
         return test;
     }
 
-    Constante * operator+(Constante & c1){};
-    Constante * operator-(Constante & c1){};
-    Constante * operator*(Constante & c1){};
-    Constante * operator/(Constante & c1){};
+    Constante * operator+(Constante & c1){} ;
+    Constante * operator-(Constante & c1){} ;
+    Constante * operator*(Constante & c1){} ;
+    Constante * operator/(Constante & c1){} ;
 };
 
 
