@@ -14,6 +14,9 @@ public:
     virtual Constante * operator-(Constante & c1) = 0;
     virtual Constante * operator*(Constante & c1) = 0;
     virtual Constante * operator/(Constante & c1) = 0;
+
+    virtual Constante * getCopy() = 0;
+
     ~Constante() {}
 
 };
@@ -28,6 +31,14 @@ public:
     CEntier(int v):value(v){}
 
     CEntier(const CEntier & c):value(c.getValue()){}
+
+
+    Constante * getCopy()
+    {
+        return new CEntier(*this);
+    }
+
+
 
     int getValue() const{
         return value;
@@ -58,6 +69,11 @@ public:
 
     CReel(float v):value(v){}
     CReel(const CReel & c):value(c.getValue()){}
+
+    Constante * getCopy()
+    {
+        return new CReel(*this);
+    }
 
      float getValue() const{
         return value;
@@ -96,6 +112,13 @@ public:
         toFraction(f, num, denom);
     }
 
+    Constante * getCopy()
+    {
+        return new CRationnel(*this);
+    }
+
+
+
     int getNum() const{
         return num;
     }
@@ -133,6 +156,12 @@ public:
     CExpression(QString ex):exp(ex){}
     CExpression(const CExpression & c ):exp(c.getExp()){}
 
+
+    Constante * getCopy()
+    {
+        return new CExpression(*this);
+    }
+
     QString getExp() const{
         return exp;
     }
@@ -142,6 +171,10 @@ public:
     QString getValuetoString() const{
         return exp;
     }
+
+    Constante * operator-(QString e);
+    Constante * operator/(QString e);
+
 
     Constante * operator+(Constante & c1);
     Constante * operator-(Constante & c1);
@@ -161,31 +194,39 @@ public:
 
     CComplexe(Constante* r, Constante* i){re=r; im=i;}
     CComplexe(const CComplexe & c){
-        if(typeid(*c.getIm()) ==typeid(CEntier)){
-            im = (Constante *) new CEntier(*((CEntier*) c.getIm()));
-        }else if(typeid(*c.getIm()) ==typeid(CReel)){
-            im = (Constante *) new CReel(*((CReel*) c.getIm()));
-        }else if(typeid(*c.getIm()) ==typeid(CRationnel)){
-            im = (Constante *) new CRationnel(*((CRationnel*) c.getIm()));
-        }else if(typeid(*c.getIm()) ==typeid(CComplexe)){
-           im = (Constante *) new CComplexe(*((CComplexe*) c.getIm()));
-        }else if(typeid(*c.getIm()) ==typeid(CExpression)){
-           im = (Constante *) new CExpression(*((CExpression*) c.getIm()));
-        }
+        im = c.getIm()->getCopy();
+        re = c.getRe()->getCopy();
+//        if(typeid(*c.getIm()) ==typeid(CEntier)){
+//            im = (Constante *) new CEntier(*((CEntier*) c.getIm()));
+//        }else if(typeid(*c.getIm()) ==typeid(CReel)){
+//            im = (Constante *) new CReel(*((CReel*) c.getIm()));
+//        }else if(typeid(*c.getIm()) ==typeid(CRationnel)){
+//            im = (Constante *) new CRationnel(*((CRationnel*) c.getIm()));
+//        }else if(typeid(*c.getIm()) ==typeid(CComplexe)){
+//           im = (Constante *) new CComplexe(*((CComplexe*) c.getIm()));
+//        }else if(typeid(*c.getIm()) ==typeid(CExpression)){
+//           im = (Constante *) new CExpression(*((CExpression*) c.getIm()));
+//        }
 
-        if(typeid(*c.getRe()) ==typeid(CEntier)){
-            re = (Constante *) new CEntier(*((CEntier*) c.getRe()));
-        }else if(typeid(*c.getRe()) ==typeid(CReel)){
-            re = (Constante *) new CReel(*((CReel*) c.getRe()));
-        }else if(typeid(*c.getRe()) ==typeid(CRationnel)){
-            re = (Constante *) new CRationnel(*((CRationnel*) c.getRe()));
-        }else if(typeid(*c.getRe()) ==typeid(CComplexe)){
-           re = (Constante *) new CComplexe(*((CComplexe*) c.getRe()));
-        }else if(typeid(*c.getRe()) ==typeid(CExpression)){
-           re = (Constante *) new CExpression(*((CExpression*) c.getRe()));
-        }
+//        if(typeid(*c.getRe()) ==typeid(CEntier)){
+//            re = (Constante *) new CEntier(*((CEntier*) c.getRe()));
+//        }else if(typeid(*c.getRe()) ==typeid(CReel)){
+//            re = (Constante *) new CReel(*((CReel*) c.getRe()));
+//        }else if(typeid(*c.getRe()) ==typeid(CRationnel)){
+//            re = (Constante *) new CRationnel(*((CRationnel*) c.getRe()));
+//        }else if(typeid(*c.getRe()) ==typeid(CComplexe)){
+//           re = (Constante *) new CComplexe(*((CComplexe*) c.getRe()));
+//        }else if(typeid(*c.getRe()) ==typeid(CExpression)){
+//           re = (Constante *) new CExpression(*((CExpression*) c.getRe()));
+//        }
 
     }
+
+    Constante * getCopy()
+    {
+        return new CComplexe(*this);
+    }
+
 
     ~CComplexe(){delete re; delete im;}
 
@@ -201,10 +242,10 @@ public:
         return test;
     }
 
-    Constante * operator+(Constante & c1){} ;
-    Constante * operator-(Constante & c1){} ;
-    Constante * operator*(Constante & c1){} ;
-    Constante * operator/(Constante & c1){} ;
+    Constante * operator+(Constante & c1);
+    Constante * operator-(Constante & c1);
+    Constante * operator*(Constante & c1);
+    Constante * operator/(Constante & c1);
 };
 
 

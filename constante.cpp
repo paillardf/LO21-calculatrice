@@ -111,35 +111,36 @@ Constante * CReel::operator+(Constante & c){
         return c.operator+(*test);}
  }
 
-//Constante * CComplexe::operator+(Constante & c){
-//    if(typeid(c) ==typeid(CEntier)){
-//        CEntier &c1 = (CEntier&) c;
-//        return (Constante *)new CComplexe(this->operator +(c1),getIm());
+Constante * CComplexe::operator+(Constante & c){
+    if(typeid(c) ==typeid(CEntier)){
+        CEntier &c1 = (CEntier&) c;
+        return (Constante *)new CComplexe(this->operator +(c1),getIm());
 
-//    }
-//  if(typeid(c) ==typeid(CRationnel)){
-//        CRationnel &c1 = (CRationnel&) c;
-//        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
+    }
+  if(typeid(c) ==typeid(CRationnel)){
+        CRationnel &c1 = (CRationnel&) c;
 
-//    }
-//    if(typeid(c) ==typeid(CReel)){
-//        CReel &c1 = (CReel&) c;
-//        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
+        return (Constante *)new CComplexe(c1+*getRe(), getIm()->getCopy());
 
-//    }
-//    if(typeid(c) ==typeid(CComplexe)){
-//        CComplexe &c1 = (CComplexe&) c;
-//        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
+    }
+    if(typeid(c) ==typeid(CReel)){
+        CReel &c1 = (CReel&) c;
+        return (Constante *)new CComplexe(c1+*getRe(), getIm()->getCopy());
 
-//    }
-//    else{ return c.operator +(this);}
-// }
+    }
+    if(typeid(c) ==typeid(CComplexe)){
+        CComplexe &c1 = (CComplexe&) c;
+        return (Constante *)new CComplexe(c1.getRe()->operator +(*getRe()), c1.getIm()->operator +(*getIm()));
 
-Constante * CExpression::operator+(Constante & c){
-    return (Constante *)new CExpression('+'+' '+QString(getExp()+' '+c.getValuetoString()));
+    }
+    else{ return c.operator +(*this);}
  }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+Constante * CExpression::operator+(Constante & c){
+    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString())+' '+'+');
+ }
+
+/////////////////////////////////////////  OPERATOR - /////////////////////////////////////////////////////
 
 Constante * CEntier::operator-(Constante& c){
     if(typeid(c) == typeid(CEntier)){
@@ -156,10 +157,10 @@ Constante * CEntier::operator-(Constante& c){
             c1.setValue(-1*getValue());
             return c1.operator +(*this);
     }
-   /* if(typeid(c) == typeid(CComplexe)){
+    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(getValue()-c1.getRe(),c1.getIm());
-    }*/
+            return (Constante *) new CComplexe(*this-*c1.getRe(),c1.getIm()->getCopy());
+    }
    if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
             return c1.operator -((Constante & ) *this);
@@ -181,10 +182,10 @@ Constante * CRationnel::operator-(Constante & c){
             c1.setValue(-1*c1.getValue());
             return c1.operator +(*this);
     }
-   /* if(typeid(c) == typeid(CComplexe)){
+   if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
-    }*/
+            return (Constante *) new CComplexe(*this-*c1.getRe(), c1.getIm()->getCopy());
+    }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
             return c1.operator-((Constante & ) *this);
@@ -206,46 +207,46 @@ Constante * CReel::operator-(Constante & c){
             CReel &c1 = (CReel&) c;
             return (Constante *) new CReel(getValue()-c1.getValue());
     }
-    /*if(typeid(c) == typeid(CComplexe)){
+    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
-    }*/
+            return (Constante *) new CComplexe(*this-*c1.getRe(), c1.getIm()->getCopy());
+    }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
             return c1.operator -((Constante & ) *this);
     }
  }
 
-/*Constante * CComplexe::operator-(Constante & c){
+Constante * CComplexe::operator-(Constante & c){
     if(typeid(c) == typeid(CEntier)){
             CEntier &c1 = (CEntier&) c;
-            return (Constante *) new CEntier(c1.getValue()-this->getValue());
+            return (Constante *) new CComplexe(*this->getRe()-c1, this->getIm()->getCopy());
     }
     if(typeid(c) == typeid(CRationnel)){
             CRationnel &c1 = (CRationnel&) c;
-            return (Constante *) new CRationnel(c1.getValue()-this->getValue());
+            return (Constante *) new CComplexe(*this->getRe()-c1, this->getIm()->getCopy());
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
-            return (Constante *) new CReel(c1.getValue()-this->getValue());
+            return (Constante *) new CComplexe(*this->getRe()-c1, this->getIm()->getCopy());
     }
     if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
+            return (Constante *) new CComplexe(*this->getRe()-*c1.getRe(), *this->getIm()-*c1.getIm());
     }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
-            return (Constante *) new CExpression(c1.getValue()-this->getValue());
+            return c1.operator -(QString(getValuetoString()+' '+c1.getExp()+' '+'-'));
     }
-    }
- }*/
-
-Constante * CExpression::operator-(Constante & c){
-    return (Constante *)new CExpression(QString('-'+' '+getExp()+' '+c.getValuetoString()));
 
  }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+Constante * CExpression::operator-(Constante & c){
+    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString())+ ' '+'-');
+
+ }
+
+//////////////////////////////////////// OPERATOR  /   //////////////////////////////////////////////////////
 
 Constante * CEntier::operator/(Constante& c){
     if(typeid(c) == typeid(CEntier)){
@@ -264,13 +265,13 @@ Constante * CEntier::operator/(Constante& c){
             c1.setValue(1/c1.getValue());
             return c1.operator *(*this);
     }
-   /* if(typeid(c) == typeid(CComplexe)){
+   if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(getValue()-c1.getRe(),c1.getIm());
-    }*/
+            return (Constante *) new CComplexe(*this/ *c1.getRe(),c1.getIm()->getCopy());
+    }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
-            return c1.operator -((Constante & ) *this);
+            return c1.operator /((Constante & ) *this);
     }
     }
 
@@ -288,13 +289,13 @@ Constante * CRationnel::operator/(Constante & c){
             c1.setValue(1/c1.getValue());
             return c1.operator *(*this);
     }
-   /* if(typeid(c) == typeid(CComplexe)){
+   if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
-    }*/
+            return (Constante *) new CComplexe(*this/ *c1.getRe(), c1.getIm()->getCopy());
+    }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
-            return c1.operator -((Constante & ) *this);
+            return c1.operator /((Constante & ) *this);
     }
 
  }
@@ -313,44 +314,48 @@ Constante * CReel::operator/(Constante & c){
             CReel &c1 = (CReel&) c;
             return (Constante *) new CReel(getValue()/c1.getValue());
     }
-    /*if(typeid(c) == typeid(CComplexe)){
+    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
-            return (Constante *) new CComplexe(c1.getValue()-this->getValue());
-    }*/
+            return (Constante *) new CComplexe(*this/ *c1.getRe(), c1.getIm()->getCopy());
+    }
     if(typeid(c) == typeid(CExpression)){
             CExpression &c1 = (CExpression&) c;
             return c1.operator /((Constante & ) *this);
     }
  }
 
-/*Constante * CComplexe::operator/(Constante & c){
+Constante * CComplexe::operator/(Constante & c){
     if(typeid(c) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) c;
-        return (Constante *)new CComplexe((Constante *) new CEntier(c1.getValue()+getRe()),(Constante *) new CEntier(getIm()));
+        return (Constante *)new CComplexe(*this->getRe()/c1, this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) c;
-        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
+        return (Constante *)new CComplexe(*this->getRe()/c1, this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CReel)){
         CReel &c1 = (CReel&) c;
-        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
+        return (Constante *)new CComplexe(*this->getRe()/c1, this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CComplexe)){
         CComplexe &c1 = (CComplexe&) c;
-        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
+        return (Constante *)new CComplexe(*this->getRe()/ *c1.getRe(), *this->getIm()/ * c1.getIm());
 
     }
-    else{ return c.operator +(this);}
- }*/
+    else{ return c.operator /(*this);}
+ }
 
 
 Constante * CExpression::operator/(Constante & c){
-    return (Constante *)new CExpression('/' +' '+ QString(getExp()+' '+c.getValuetoString()));
-}
+    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString()+' '+'/'));
+
+ }
+
+Constante * CExpression::operator-(QString e){return (Constante *) new CExpression(e);}
+Constante * CExpression::operator/(QString e){return (Constante *) new CExpression(e);}
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -402,32 +407,32 @@ Constante * CReel::operator*(Constante & c){
         return c.operator*(*test);}
  }
 
-/*Constante * CComplexe::operator*(Constante & c){
+Constante * CComplexe::operator*(Constante & c){
     if(typeid(c) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) c;
-        return (Constante *)new CComplexe((Constante *) new CEntier(c1.getValue()+getRe()),(Constante *) new CEntier(getIm()));
+        return (Constante *)new CComplexe(this->getRe()->operator *(c1), this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) c;
-        return (Constante *)new CComplexe(new CRationnel(c1.getNum()+getRe()*c1.getDenom(),c1.getDenom()),getIm());
+        return (Constante *)new CComplexe(this->getRe()->operator *(c1), this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CReel)){
         CReel &c1 = (CReel&) c;
-        return (Constante *)new CComplexe(new CReel(c1.getEnt()+getRe(),c1.getDec()), getIm());
+        return (Constante *)new CComplexe(this->getRe()->operator *(c1), this->getIm()->getCopy());
 
     }
     if(typeid(c) ==typeid(CComplexe)){
         CComplexe &c1 = (CComplexe&) c;
-        return (Constante *)new CComplexe(c1.getRe()+getRe(), c1.getIm()+getIm());
+        return (Constante *)new CComplexe(this->getRe()->operator *(*c1.getRe()), this->getIm()->operator *(*c1.getIm()));
 
     }
-    else{ return c.operator +(this);}
- }*/
+    else{ return c.operator *(*this);}
+ }
 
 Constante * CExpression::operator*(Constante & c){
-    return (Constante *)new CExpression('* '+QString(getExp()+' '+c.getValuetoString()));
+    return (Constante *)new CExpression(QString(getExp()+' '+c.getValuetoString())+' ' +'*');
 
  }
 //////////////////////////////////////////////////////////////////////////////////////////////

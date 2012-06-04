@@ -148,6 +148,7 @@ void Pile::swap(){
                 CEntier *c1 = (CEntier*) t;
                 CEntier *c2 = (CEntier*) v;
 
+
      int x =c1->getValue();
      int y = c2->getValue();
     if(x!=y){
@@ -157,7 +158,7 @@ void Pile::swap(){
             y = a;
         }
 
-        if(y>=this->size()){
+        if(y>this->size()){
             throw std::logic_error( "SWAP : parametre trop grand pour la pile");
         }else if(x<1){
            throw std::logic_error( "SWAP : les parametres doivent être positifs");
@@ -174,7 +175,7 @@ void Pile::swap(){
 
         Constante* nouvy = this->pop();
 
-        for(int i=x; i<y; i++){
+        for(int i=x; i<y-1; i++){
             cop.push(this->pop());
         }
 
@@ -187,6 +188,14 @@ void Pile::swap(){
         }
 
         this->push(nouvx);
+
+//ENREGISTREMENT DE LA COMMANDE
+        CommandeSwap * cmd = new CommandeSwap(this);
+        cmd->addOld(c1);
+        cmd->addOld(c2);
+        this->saveCommande(cmd);
+
+
     }
  return;
 }else{
@@ -272,47 +281,71 @@ void Pile::mean(){
 
 void Pile::clear(){
 
-    qDebug()<<"ERREUR LE PARAMETRE DE MEAN DOIT ETRE DE 1 ENTIER";
-
-    while(!this->isEmpty()){
-        this->pop();
+    if(!this->isEmpty()){
+    CommandeBasic * cmd = new CommandeBasic(this);
+        while(!this->isEmpty()){
+            cmd->addOld(this->top());
+            this->pop();
+        }
+    this->saveCommande(cmd);
     }
 }
 
 void Pile::dup(){
+
+    if(this->isEmpty()){
+        throw std::logic_error( "DUP : la pile est vide");
+
+    }
+
+    Constante* nouv;
    if(typeid(*this->top()) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) *this->top();
-        Constante* nouv = new CEntier(c1.getValue());
+        nouv = new CEntier(c1);
         this->push(nouv);
     }
     else if(typeid(*this->top()) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) *this->top();
-        Constante* nouv = new CRationnel(c1.getNum(),c1.getDenom());
+        nouv = new CRationnel(c1);
         this->push(nouv);
     }
     else if(typeid(*this->top()) ==typeid(CReel)){
         CReel &c1 = (CReel&) *this->top();
-        Constante* nouv = new CReel(c1.getValue());
+        nouv = new CReel(c1);
         this->push(nouv);
     }
-    /*else if(typeid(*this->top()) ==typeid(CComplexe)){
+    else if(typeid(*this->top()) ==typeid(CComplexe)){
         CComplexe &c1 = (CComplexe&) *this->top();
-        Constante* nouv = new CComplexe(c1.getRe(),c1.getIm());
+        nouv = new CComplexe(c1);
         this->push(nouv);
-    }*/
+    }
     else if(typeid(*this->top()) ==typeid(CExpression)){
         CExpression &c1 = (CExpression&) *this->top();
-        Constante* nouv = new CExpression(c1.getExp());
+        nouv = new CExpression(c1);
         this->push(nouv);
     }
+   CommandeBasic * cmd = new CommandeBasic(this);
+   cmd->addNew(nouv);
+   this->saveCommande(cmd);
 
 }
 
 void Pile::drop(){
-    this->pop();
+
+    if(!this->isEmpty()){
+
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(this->top());
+        this->saveCommande(cmd);
+        this->pop();
+    }
+
 }
 
 void Pile::fAddition(){
+    if(this->size()<2){
+        throw std::logic_error( "ADDITION : il n'y a pas assez de paramatres");
+    }
     Constante* inter = this->pop();
     Constante* inter2 = this->pop();
     Constante* res = inter2->operator +(*inter);
@@ -320,62 +353,110 @@ void Pile::fAddition(){
     this->cast(res);
 
     this->push(res);
-//    if(typeid(*resinter) ==typeid(CEntier) && !isEntier()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CRationnel) && !isRationnel()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CReel) && !isReel()){ /* Constante * res = CAST */ }
 
-   // this->push(res);
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(inter);
+    cmd->addOld(inter2);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
+
+
 
     }
 void Pile::fSoustraction(){
+
+    if(this->size()<2){
+        throw std::logic_error( "SOUSTRACTION : il n'y a pas assez de paramatres");
+    }
+
     Constante* inter = this->pop();
     Constante* inter2 = this->pop();
-    Constante* resinter = inter2->operator -(*inter);
+    Constante* res = inter2->operator -(*inter);
 
-//    if(typeid(*resinter) ==typeid(CEntier) && !isEntier()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CRationnel) && !isRationnel()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CReel) && !isReel()){ /* Constante * res = CAST */ }
+    this->cast(res);
 
-   // this->push(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(inter);
+    cmd->addOld(inter2);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 
     }
 void Pile::fMultiplication(){
+    if(this->size()<2){
+        throw std::logic_error( "MULTIPLICATION : il n'y a pas assez de paramatres");
+    }
+
     Constante* inter = this->pop();
     Constante* inter2 = this->pop();
-    Constante* resinter = inter2->operator *(*inter);
+    Constante* res = inter2->operator *(*inter);
 
-//    if(typeid(*resinter) ==typeid(CEntier) && !isEntier()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CRationnel) && !isRationnel()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CReel) && !isReel()){ /* Constante * res = CAST */ }
+    this->cast(res);
 
-   // this->push(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(inter);
+    cmd->addOld(inter2);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
+
 
     }
 void Pile::fDivision(){
+    if(this->size()<2){
+        throw std::logic_error( "DIVISION : il n'y a pas assez de paramatres");
+    }
+
     Constante* inter = this->pop();
     Constante* inter2 = this->pop();
-    Constante* resinter = inter2->operator /(*inter);
+    Constante* res;
+    try {
+         res = inter2->operator /(*inter);
+    } catch (std::exception e) { //ArithmeticException TODO
+         this->push(inter2);
+         this->push(inter);
+         throw std::logic_error( "DIVISION : division par zero!");
+    }
 
-//    if(typeid(*resinter) ==typeid(CEntier) && !isEntier()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CRationnel) && !isRationnel()){ /* Constante * res = CAST */ }
-//    if(typeid(*resinter) ==typeid(CReel) && !isReel()){ /* Constante * res = CAST */ }
 
-   // this->push(res);
+    this->cast(res);
+
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(inter);
+    cmd->addOld(inter2);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
+
 
     }
 
 void Pile::fPOW(){
+
+
     if(typeid(*this->top()) ==typeid(CEntier)){
          Constante* pow = this->pop();
+
             if(typeid(*this->top()) ==typeid(CEntier)){
                 Constante* nbr = this->pop();
                 CEntier *c1 = (CEntier*) pow;
                 CEntier *c2 = (CEntier*) nbr;
+
                 int resu = 1;
                 for(int i =1; i<=c1->getValue() ; i++){
                     resu = resu*c2->getValue();}
-                c2->setValue(resu);
-                this->push(c2);
+
+                Constante * res = (Constante * ) new CEntier(resu);
+                this->push(res);
+                CommandeBasic * cmd = new CommandeBasic(this);
+                cmd->addOld(pow);
+                cmd->addOld(nbr);
+                cmd->addNew(res);
+                this->saveCommande(cmd);
             }
             if(typeid(*this->top()) ==typeid(CRationnel)){
                 Constante* nbr = this->pop();
@@ -387,9 +468,15 @@ void Pile::fPOW(){
                     resu = resu*c2->getNum();}
                 for(int i =1; i<=c1->getValue() ; i++){
                     resu2 = resu2*c2->getDenom();}
-                c2->setNum(resu);
-                c2->setDenom(resu2);
-                this->push(c2);
+
+                Constante * res = (Constante * ) new CRationnel(resu, resu2);
+                this->push(res);
+                CommandeBasic * cmd = new CommandeBasic(this);
+                cmd->addOld(pow);
+                cmd->addOld(nbr);
+                cmd->addNew(res);
+                this->saveCommande(cmd);
+
             }
             if(typeid(*this->top()) ==typeid(CReel)){
                 Constante* nbr = this->pop();
@@ -398,12 +485,20 @@ void Pile::fPOW(){
                 int resu = 1;
                 for(int i =1; i<=c1->getValue() ; i++){
                     resu = resu*c2->getValue();}
-                c2->setValue(resu);
-                this->push(c2);
+                Constante * res = (Constante * ) new CReel(resu);
+                this->push(res);
+                CommandeBasic * cmd = new CommandeBasic(this);
+                cmd->addOld(pow);
+                cmd->addOld(nbr);
+                cmd->addNew(res);
+                this->saveCommande(cmd);
             }
             else{
                 this->push(pow);
+                throw std::logic_error( "POW : le deuxieme parametre n'est pas de type valide");
             }
+    }else{
+        throw std::logic_error( "POW : le premier parametre doit être un entier");
     }
 
  } // puissance (entier, rationnel, réel)
@@ -419,10 +514,19 @@ void Pile::fMOD(){
 
                 Constante* res= new CEntier(c2->getValue()%c1->getValue());
                 this->push(res);
+                CommandeBasic * cmd = new CommandeBasic(this);
+                cmd->addOld(nbr);
+                cmd->addOld(mod);
+                cmd->addNew(res);
+                this->saveCommande(cmd);
+
             }
             else{
                 this->push(mod);
+                throw std::logic_error( "POW : le deuxieme parametre doit être un entier");
             }
+    }else{
+        throw std::logic_error( "MODULO : le premier parametre doit être un entier");
     }
 
 } // modulo (entier)
@@ -442,12 +546,12 @@ void Pile::fSIGN(){
         c1->setNum(-1*c1->getNum());
         Constante* res = c1;
         this->push(res); }
-    /*if(typeid(*this->top()) ==typeid(CComplexe)){
+    if(typeid(*this->top()) ==typeid(CComplexe)){
         Constante* nbr = this->pop();
         CComplexe *c1 = (CComplexe*) nbr;
-
+//TODO
         Constante* res = c1;
-        this->push(res); }*/
+        this->push(res); }
     if(typeid(*this->top()) ==typeid(CReel)){
         Constante* nbr = this->pop();
         CReel *c1 = (CReel*) nbr;

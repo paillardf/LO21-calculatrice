@@ -10,6 +10,7 @@ Calculatrice::Calculatrice(QWidget *parent) :
     onglet(0)
 {
 
+    setWindowFlags(Qt::Dialog|Qt::MSWindowsFixedSizeDialogHint);
     ui->setupUi(this);
     connect(ui->addTab, SIGNAL(clicked()), this, SLOT(creerTab()));
     connect(ui->nbElementPile, SIGNAL(valueChanged(int)), this, SLOT(afficher(int)));
@@ -125,100 +126,99 @@ void Calculatrice::analyse(const QString & txt){
 
     while(!txtTemp.isEmpty())
     {
-        int pos = txtTemp.length()-1;
-        QChar c = txtTemp.at(pos);
+        QChar c = txtTemp.at(0);
 
         if(c.isDigit()||txtTemp.right(1)=="'"){
             Constante *  val = getConstante(txtTemp);
             if(ui->complexeBox->isChecked()&&!txtTemp.isEmpty()){
-                pos = txtTemp.length()-1;
-                c = txtTemp.at(pos);
+                c = txtTemp.at(0);
                 if(c=='$'){
-                    val = new CComplexe(getConstante(txtTemp), val);
+                    txtTemp = txtTemp.right(txtTemp.length()-1);
+                    val = new CComplexe(val,getConstante(txtTemp));
                 }
             }
             this->pileActive()->push(val);
         }else{
 
-
+            int pos = txtTemp.length()-1;
             if(c=='+'){
 
                 pileActive()->fAddition();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c==' '){
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='-'){
                 pileActive()->fSoustraction();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='*'){
                 pileActive()->fMultiplication();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='/'){
                 pileActive()->fDivision();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='^'){
                 pileActive()->fPOW();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='%'){
                 pileActive()->fMOD();
-                txtTemp = txtTemp.left(pos);
+                txtTemp = txtTemp.right(pos);
             }else if(c=='!'){
                 pileActive()->fact();
-                txtTemp = txtTemp.left(pos);
-            }else if(txtTemp.right(4).compare("CUBE")==0){
+                txtTemp = txtTemp.right(pos);
+            }else if(txtTemp.left(4).compare("CUBE")==0){
                 pileActive()->fCUBE();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(4).compare("SQRT")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(4).compare("SQRT")==0){
                 pileActive()->fSQRT();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(3).compare("SQR")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(3).compare("SQR")==0){
                 pileActive()->fSQR();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(4).compare("SINH")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("SINH")==0){
                 pileActive()->fSINH();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(3).compare("SIN")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(3).compare("SIN")==0){
                 pileActive()->fSIN();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(4).compare("COSH")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("COSH")==0){
                 pileActive()->fCOSH();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(3).compare("COS")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(3).compare("COS")==0){
                 pileActive()->fCOS();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(4).compare("TANH")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("TANH")==0){
                 pileActive()->fTANH();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(3).compare("TAN")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(3).compare("TAN")==0){
                 pileActive()->fTAN();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(2).compare("LN")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(2).compare("LN")==0){
                 pileActive()->fLN();
-                txtTemp = txtTemp.left(pos-1);
-            }else if(txtTemp.right(3).compare("LOG")==0){
+                txtTemp = txtTemp.right(pos-1);
+            }else if(txtTemp.left(3).compare("LOG")==0){
                 pileActive()->fLOG();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(3).compare("INV")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(3).compare("INV")==0){
                 pileActive()->fINV();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(4).compare("SWAP")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("SWAP")==0){
                 pileActive()->swap();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(3).compare("DUP")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(3).compare("DUP")==0){
                 pileActive()->dup();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(3).compare("SUM")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(3).compare("SUM")==0){
                 pileActive()->sum();
-                txtTemp = txtTemp.left(pos-2);
-            }else if(txtTemp.right(4).compare("DROP")==0){
+                txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("DROP")==0){
                 pileActive()->drop();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(4).compare("MEAN")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(4).compare("MEAN")==0){
                 pileActive()->mean();
-                txtTemp = txtTemp.left(pos-3);
-            }else if(txtTemp.right(5).compare("CLEAR")==0){
+                txtTemp = txtTemp.right(pos-3);
+            }else if(txtTemp.left(5).compare("CLEAR")==0){
                 pileActive()->clear();
-                txtTemp = txtTemp.left(pos-4);
+                txtTemp = txtTemp.right(pos-4);
             }else{
 
                 //ERREUR
@@ -236,34 +236,36 @@ void Calculatrice::analyse(const QString & txt){
 
 Constante * Calculatrice::getConstante(QString & txtTemp){
 
-    if(txtTemp.right(1).compare("'")==0){
+    if(txtTemp.left(1).compare("'")==0){
        int taille = txtTemp.size();
-       txtTemp = txtTemp.left(taille-1);
+       txtTemp = txtTemp.right(taille-1);
        int pos = txtTemp.lastIndexOf("'");
        if(pos==-1){
-           //ERREUR EXPRESSION NON FERMEE
+           throw std::logic_error( "SYNTAXE : expression non fermee");
 
        }else{
            txtTemp = txtTemp.left(pos);
-           return new CExpression(txtTemp.right(taille-1-pos));
+           Constante * c = (Constante *) new CExpression(txtTemp.right(taille-1-pos));
+           txtTemp = txtTemp.right(taille-pos);
+           return c;
 
        }
     }else{
 
-
-        QString a = getNumber(txtTemp);
-        QString b = "";
-
+        int t = getSizeNumber(txtTemp);
+        QString a = txtTemp.left(t);
+        txtTemp = txtTemp.right(txtTemp.size()-t);
         if(!txtTemp.isEmpty())
         {
 
-            if(a[0]==','){//NOMBRE A VIRGULE
-
-
-                b=a;
-                QString c = getNumber(txtTemp);
-                a =c;
-                QString nombre = a+b;
+            if(txtTemp.at(0)==','){//NOMBRE A VIRGULE
+                t = txtTemp.size()-1;
+                QString tp = txtTemp.right(t);
+                txtTemp = tp;
+                t = getSizeNumber(txtTemp);
+                QString b = txtTemp.left(t);
+                txtTemp = txtTemp.right(txtTemp.size()-t);
+                QString nombre = a+','+b;
                 return  new CReel(nombre.toFloat());
             }
         }
@@ -290,24 +292,23 @@ void Calculatrice::retablir(){
     p->afficher(ui->nbElementPile->value());
 }
 
-QString &Calculatrice::getNumber(QString & txt){
-    int pos = txt.length()-1;
+int Calculatrice::getSizeNumber(const QString & txt){
+    int pos = 0;
     QChar c = txt.at(pos);
 
     while(c.isDigit()){
 
-        if(pos>0){
-            pos--;
+
+            pos++;
+        if(pos<txt.size()){
+            c = txt.at(pos);
         }else{
             break;
         }
-        c = txt.at(pos);
+
 
     }
-    QString r(txt.right(txt.length()-pos));
-
-    txt = txt.left(pos);
-    return r;
+    return pos;
 }
 
 void Calculatrice::ecrire(const QString & txt){

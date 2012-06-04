@@ -10,6 +10,8 @@
 #include <QDebug>
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
+
 
 
 class Pile : public QStack<Constante *>

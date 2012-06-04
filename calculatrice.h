@@ -41,7 +41,7 @@ private:
     Pile *pileActive();
     void analyse(const QString & txt);
     Constante * getConstante(QString & txtTemp);
-    QString & getNumber(QString & txt);
+    int getSizeNumber(const QString & txt);
 
 
 
