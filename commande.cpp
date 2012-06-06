@@ -2,6 +2,20 @@
 #include "commande.h"
 
 
+void CommandeEval::Do(){
+    pile->pop();
+    for (int i = 0; i < pCommande.size(); i++){
+       Commande * c =  pCommande.at(i);
+       c->Do();
+    }
+}
+void CommandeEval::Undo(){
+    for (int i =  pCommande.size()-1; i >=0 ; i--){
+       Commande * c =  pCommande.at(i);
+       c->Undo();
+    }
+    pile->push(expression);
+}
 
 
     CommandeBasic::~CommandeBasic(){

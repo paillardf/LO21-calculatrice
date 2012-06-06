@@ -15,6 +15,7 @@ public:
    // ~Commande();
     virtual void Do() = 0;
     virtual void Undo() = 0;
+    virtual void Vider() = 0;
 
 };
 
@@ -30,6 +31,14 @@ public:
 
     ~CommandeBasic();
 
+    void Vider()
+    {
+
+        newConst.clear();
+        oldConst.clear();
+    }
+
+
     void addOld(Constante * c);
     void addNew(Constante * c);
 
@@ -38,6 +47,38 @@ public:
 
     void Undo();
 
+};
+
+class CommandeEval : public Commande
+{
+private:
+    QStack<Commande *> pCommande;
+    Pile * pile;
+    Constante * expression;
+
+public:
+    CommandeEval(Pile * p, Constante * c):pile(p), expression(c){}
+
+    ~CommandeEval(){
+
+        while(!pCommande.isEmpty()){
+            Commande * c = pCommande.pop();
+            delete c;
+        }
+    }
+
+
+    void Vider()
+    {
+        pCommande.clear();
+    }
+
+    void addCommande(Commande * c){
+        pCommande.push(c);
+    }
+
+    void Do();
+    void Undo();
 };
 
 class CommandeSwap : public Commande
@@ -50,6 +91,11 @@ public:
     CommandeSwap(Pile * p):pile(p){}
 
     ~CommandeSwap();
+
+    void Vider()
+    {
+        oldConst.clear();
+    }
 
     void addOld(Constante * c);
     void Do();

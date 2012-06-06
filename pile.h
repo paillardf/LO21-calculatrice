@@ -7,7 +7,6 @@
 #include <QCheckBox>
 #include <QRadioButton>
 #include <QStack>
-#include <QDebug>
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
@@ -25,9 +24,9 @@ private:
     QCheckBox * btComplexe;
 
     QStack<Commande *> listeCommande;
-    bool executionCommande;
+    int executionCommande;
     int posCommande;
-    void saveCommande(Commande *c);
+
 
     bool isRadian(){ return !btDegre->isChecked();}
     bool isDegre(){ return btDegre->isChecked();}
@@ -41,10 +40,15 @@ public:
     ~Pile();
     Pile& clone(Pile &p) const;
     QLabel * affichage;
+    void setExecutionCommande(int i){
+        executionCommande = i;
+    }
+
     void cast(Constante* & cst);
     void afficher(int tailleMax);
     void annuler();
     void retablir();
+    void saveCommande(Commande *c);
 
         void swap();
         void sum();

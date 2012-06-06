@@ -9,13 +9,18 @@ Calculatrice::Calculatrice(QWidget *parent) :
     ui(new Ui::Calculatrice),
     onglet(0)
 {
-
-    setWindowFlags(Qt::Dialog|Qt::MSWindowsFixedSizeDialogHint);
+//Qt::Dialog|
+    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
     ui->setupUi(this);
     connect(ui->addTab, SIGNAL(clicked()), this, SLOT(creerTab()));
     connect(ui->nbElementPile, SIGNAL(valueChanged(int)), this, SLOT(afficher(int)));
     connect(ui->actionAnnuler, SIGNAL(triggered()), this , SLOT(annuler()));
     connect(ui->actionRetablir, SIGNAL(triggered()), this , SLOT(retablir()));
+    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(detruireTab(int)));
+    connect(ui->actionClavier, SIGNAL(toggled(bool)), this, SLOT(redimentionner(bool)));
+
+
+
     mapper = new QSignalMapper();
 
     connect(ui->BtBack, SIGNAL(clicked()), this, SLOT(effacer()));
@@ -64,6 +69,8 @@ Calculatrice::Calculatrice(QWidget *parent) :
     //FONCTION
     connect(ui->BtFactoriel, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtFactoriel, "!");
+    connect(ui->BtComplexe, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtComplexe, "$");
     connect(ui->BtModulo, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtModulo, "%");
     connect(ui->BtPuissance, SIGNAL(clicked()), mapper, SLOT(map()));
@@ -103,23 +110,15 @@ Calculatrice::Calculatrice(QWidget *parent) :
     mapper->setMapping(ui->BtMEAN, "MEAN");
     connect(ui->BtCLEAR, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtCLEAR, "CLEAR");
+    connect(ui->BtEval, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtEval, "EVAL");
 
     connect(mapper, SIGNAL(mapped(const QString &)), this, SLOT(ecrire(const QString &)));
     creerTab();
 
 }
 
-// GESTION DES ERREURS : QMessageBox::critical( 0, "Exception", "ex.what()", "Ok" );
 
-//try
-//    {
-//        // std::logic_error hérite de std::exception
-//        throw logic_error( "exception de test" );
-//    }
-//    catch ( exception e ) // traitement par valeur
-//    {
-//        cerr << e.what();
-//    }
 
 void Calculatrice::analyse(const QString & txt){
     QString txtTemp = txt;
@@ -128,7 +127,9 @@ void Calculatrice::analyse(const QString & txt){
     {
         QChar c = txtTemp.at(0);
 
-        if(c.isDigit()||txtTemp.right(1)=="'"){
+        if(c.isDigit()||txtTemp.right(1).compare("'")==0){
+            CommandeBasic *cmd = new CommandeBasic(this->pileActive());
+
             Constante *  val = getConstante(txtTemp);
             if(ui->complexeBox->isChecked()&&!txtTemp.isEmpty()){
                 c = txtTemp.at(0);
@@ -137,7 +138,10 @@ void Calculatrice::analyse(const QString & txt){
                     val = new CComplexe(val,getConstante(txtTemp));
                 }
             }
+
+            cmd->addNew(val);
             this->pileActive()->push(val);
+            this->pileActive()->saveCommande((Commande *) cmd);
         }else{
 
             int pos = txtTemp.length()-1;
@@ -219,9 +223,12 @@ void Calculatrice::analyse(const QString & txt){
             }else if(txtTemp.left(5).compare("CLEAR")==0){
                 pileActive()->clear();
                 txtTemp = txtTemp.right(pos-4);
+            }else if(txtTemp.left(4).compare("EVAL")==0){
+                this->fEVAL();
+                txtTemp = txtTemp.right(pos-3);
             }else{
 
-                //ERREUR
+                throw std::logic_error( "SYNTAXE : verifiez votre syntaxe, element invalide detecte");
 
             }
 
@@ -230,23 +237,55 @@ void Calculatrice::analyse(const QString & txt){
 
     }
     this->pileActive()->afficher(ui->nbElementPile->value());
-    //ui->entreeTxt->setText("FIN");
 }
+
+void Calculatrice::fEVAL(){
+    Pile * p = pileActive();
+    if(p->isEmpty()){
+        throw std::logic_error( "EVAL : la pile est vide");
+
+    }
+
+    if(typeid(*p->top()) ==typeid(CExpression)){
+        try{
+            Constante * nbr = p->pop();
+            CommandeEval * c = new CommandeEval(p, nbr);
+            p->saveCommande(c);
+            p->setExecutionCommande(2);// ON RECUPERE TOUTES LES COMMANDES ENREGISTRE
+            qDebug()<<"Commande Mise en place";
+            this->analyse(nbr->getValuetoString());
+            qDebug()<<"Apres analyse";
+            p->setExecutionCommande(0);
+            qDebug()<<"Fin";
+        }catch ( std::logic_error e ) // ERREUR PENDANT L EVALUATION DE L EXPRESSION
+        {
+          p->setExecutionCommande(0);
+          p->retablir();
+          throw e;
+
+        }
+
+    }else{
+        throw std::logic_error( "EVAL : le parametre doit etre une expression");
+    }
+} // évaluation d'une expression (Expression)
 
 
 Constante * Calculatrice::getConstante(QString & txtTemp){
 
     if(txtTemp.left(1).compare("'")==0){
+
        int taille = txtTemp.size();
        txtTemp = txtTemp.right(taille-1);
        int pos = txtTemp.lastIndexOf("'");
+
        if(pos==-1){
            throw std::logic_error( "SYNTAXE : expression non fermee");
 
        }else{
-           txtTemp = txtTemp.left(pos);
-           Constante * c = (Constante *) new CExpression(txtTemp.right(taille-1-pos));
-           txtTemp = txtTemp.right(taille-pos);
+           QString val = txtTemp.left(pos);
+           Constante * c = (Constante *) new CExpression(val);
+           txtTemp = txtTemp.right(taille-pos-2);
            return c;
 
        }
@@ -314,7 +353,7 @@ int Calculatrice::getSizeNumber(const QString & txt){
 void Calculatrice::ecrire(const QString & txt){
     QString txtact = ui->entreeTxt->text();
     ui->entreeTxt->setText(txtact+txt);
-    if(!ui->entreeTxt->text()[0].isDigit()&&!(ui->entreeTxt->text()[0] == ',') && !(ui->entreeTxt->text().indexOf("'")!=-1) ){ //TODO verifier si pas de '
+    if(!ui->entreeTxt->text()[0].isDigit()&&!(ui->entreeTxt->text()[0] == '$')&&!(ui->entreeTxt->text()[0] == ',') && !(ui->entreeTxt->text().indexOf("'")!=-1) ){ //TODO verifier si pas de '
         this->envoyer();
     }
 }
@@ -327,8 +366,22 @@ void Calculatrice::effacer(){
 
 void Calculatrice::envoyer(){
     QString txt = ui->entreeTxt->text();
-    analyse(txt);
-    ui->entreeTxt->clear();
+
+
+//GESTION DES ERREURS : QMessageBox::critical( 0, "Exception", "ex.what()", "Ok" );
+
+    try
+        {
+            analyse(txt);
+            ui->entreeTxt->clear();
+        }
+        catch ( std::logic_error e ) // traitement par valeur
+        {
+           ui->entreeTxt->setText(txt);
+           QMessageBox::critical( 0, "Exception", e.what(), "Ok" );
+        }
+
+
 
 }
 
@@ -345,6 +398,24 @@ Pile * Calculatrice::pileActive(){
 }
 
 //AJOUTE UN NOUVEL ONGLET ET CREE UNE NOUVELLE PILE
+
+void Calculatrice::detruireTab(int index){
+
+
+            if (onglet.size()>1)
+                {
+
+                Pile * p = this->onglet.at(index);
+                this->onglet.erase(this->onglet.begin()+index);
+                delete p;
+
+                ui->tabWidget->removeTab(index);
+
+                }
+
+
+}
+
 void Calculatrice::creerTab(){
     QWidget *newTab = new QWidget( ui->tabWidget );
     QLabel *fileNameLabel = new QLabel(tr("Pile"));
@@ -352,7 +423,8 @@ void Calculatrice::creerTab(){
     QVBoxLayout *mainLayout = new QVBoxLayout;
       mainLayout->addWidget(fileNameLabel);
       newTab->setLayout(mainLayout);
-      ui->tabWidget->addTab( newTab, ( "New tab" ) );
+      QString nom = "Feuille "+QString::number(onglet.size()+1);
+      ui->tabWidget->addTab( newTab, nom);
       Pile * nPile = new Pile(fileNameLabel,ui->radioButton_Entier, ui->radioButton_Rationnel, ui->radioButton_Degre, ui->complexeBox,  ui->nbElementPile->value());
       onglet.push_back(nPile);
 
@@ -364,14 +436,29 @@ void Calculatrice::creerTab(){
      nPile->afficher(ui->nbElementPile->value());
      ui->tabWidget->setCurrentWidget(newTab);
 
+
+
+
+
 }
 
 
 
+void Calculatrice::redimentionner(bool t){
+    if(!t){
+        this->resize(530, 260);
 
+    }else{
+        this->resize(530, 130);
+    }
+}
 
 Calculatrice::~Calculatrice()
 {
+    for(int i = 0; i < onglet.size(); i++){
+        delete onglet.at(i);
+    }
+
     delete ui;
 }
 

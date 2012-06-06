@@ -22,12 +22,14 @@ class Calculatrice : public QMainWindow
 
 public Q_SLOTS  :
     void creerTab();
+    void detruireTab(int index);
     void ecrire(const QString &a);
     void effacer();
     void envoyer();
     void afficher(int max);
     void annuler();
     void retablir();
+    void redimentionner(bool);
     
 public:
     explicit Calculatrice(QWidget *parent = 0);
@@ -42,6 +44,7 @@ private:
     void analyse(const QString & txt);
     Constante * getConstante(QString & txtTemp);
     int getSizeNumber(const QString & txt);
+    void fEVAL();
 
 
 

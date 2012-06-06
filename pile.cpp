@@ -7,7 +7,7 @@ Pile::Pile(QLabel * aff, QRadioButton * _btEntier,QRadioButton * _btRationnel,QR
     btDegre(_btDegre),
     btComplexe(_btComplexe),
     posCommande(0),
-    executionCommande(false)
+    executionCommande(0)
 
 {
     afficher(max);
@@ -25,13 +25,18 @@ Pile::~Pile()
 void Pile::saveCommande(Commande * c){
 //en cas d'utilisation des fonctions de la pile dans un do ou undo d'une commande,
 //la commande cree ne doit pas être concerve (utile uniquement pour commande Non Basic
-    if(executionCommande){
+    if(executionCommande ==2){ //2 ENREGISTREMENT DE L ENSEMBLE DES COMMANDES D UN EVAL
+        CommandeEval * cmd = (CommandeEval *) listeCommande.top();
+        cmd->addCommande(c);
+    }else if(executionCommande==1){ //1 COMMANDE EN COURS D UTILISATION ON ENREGISTRE PAS
+        c->Vider();
         delete c;
     }else{
 
         for (int i = posCommande; i>0;i--){
             delete listeCommande.pop();
         }
+        posCommande = 0;
         listeCommande.push(c);
     }
 }
@@ -39,31 +44,29 @@ void Pile::saveCommande(Commande * c){
 void Pile::annuler()
 {
     if(posCommande <=listeCommande.size()-1){//Pas de commande a retablir
-        executionCommande = true;//On empeche de nouvelle commande de s'enregistrer pendant l'execution d'une commande
+        executionCommande = 1;//On empeche de nouvelle commande de s'enregistrer pendant l'execution d'une commande
         Commande * c = listeCommande.at(listeCommande.size()-1-posCommande);
-        qDebug()<<"AVANT TO DO";
         c->Undo();
-        qDebug()<<"APRES TO DO";
         posCommande ++;
-        executionCommande = false;
+        executionCommande = 0;
     }
 
 }
 
 void Pile::retablir(){
     if(posCommande !=0){ //== 0 pas de commande a retablir
-        executionCommande = true;//On empeche de nouvelle commande de s'enregistrer pendant l'execution d'une commande
+        executionCommande = 1;//On empeche de nouvelle commande de s'enregistrer pendant l'execution d'une commande
         posCommande --;
         Commande * c = listeCommande.at(listeCommande.size()-1-posCommande);
         c->Do();
-        executionCommande = false;
+        executionCommande = 0;
 
     }
 }
 
 
 
-//############# COMMANDE ##################
+//############# OPERATION ##################
 Pile& Pile::clone(Pile & p) const{
 
     for(int i = 0; i<this->size(); i++){
@@ -100,18 +103,18 @@ void Pile::afficher(int tailleMax){
 }
 
 void Pile::cast(Constante* & cst){
-    if(typeid(*cst) ==typeid(CEntier) && !isEntier()){
-        CEntier *  tmp =(CEntier*) cst;
-        if(isRationnel()){
+//    if(typeid(*cst) ==typeid(CEntier) && !isEntier()){
+//        CEntier *  tmp =(CEntier*) cst;
+//        if(isRationnel()){
 
-            cst = new CRationnel(tmp->getValue(), 1);
-        }else {
-            cst = new CReel(tmp->getValue());
-        }
-        delete tmp;
+//            cst = new CRationnel(tmp->getValue(), 1);
+//        }else {
+//            cst = new CReel(tmp->getValue());
+//        }
+//        delete tmp;
 
-    }
-    else if(typeid(*cst) ==typeid(CRationnel) && !isRationnel()){
+//    }
+    if(typeid(*cst) ==typeid(CRationnel) && !isRationnel()){
         CRationnel * tmp = (CRationnel*) cst;
         if(isEntier()){
 
@@ -140,6 +143,9 @@ void Pile::cast(Constante* & cst){
 
 void Pile::swap(){
 
+    if(this->size()<2){
+        throw std::logic_error( "SWAP : deux parametres sont necessaires");
+    }
     if(typeid(*this->top()) ==typeid(CEntier)){
          Constante* t = this->pop();
             if(typeid(*this->top()) ==typeid(CEntier)){
@@ -207,6 +213,9 @@ void Pile::swap(){
 }
 
 void Pile::sum(){
+    if(this->isEmpty()){
+        throw std::logic_error( "SUM :la pile est vide");
+    }
     if(typeid(*this->top()) ==typeid(CEntier)){
         Constante* nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
@@ -231,6 +240,7 @@ void Pile::sum(){
         somme = nsomme;
     }
 
+    this->cast(somme);
     this->push(somme);
     cmd->addNew(somme);
     this->saveCommande(cmd); //On enregistre la commande
@@ -240,6 +250,9 @@ void Pile::sum(){
 }
 
 void Pile::mean(){
+    if(this->isEmpty()){
+        throw std::logic_error( "MEAN :la pile est vide");
+    }
     if(typeid(*this->top()) ==typeid(CEntier)){
         Constante* nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
@@ -263,11 +276,12 @@ void Pile::mean(){
             somme = nsomme;
         }
 
-        this->push(somme);
+
 
 
     Constante* div = new CEntier(x);
-    Constante * res = this->pop()->operator /(*div);
+    Constante * res = somme->operator /(*div);
+    this->cast(res);
     this->push(res);
     cmd->addNew(res);
     this->saveCommande(cmd);
@@ -302,28 +316,26 @@ void Pile::dup(){
    if(typeid(*this->top()) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) *this->top();
         nouv = new CEntier(c1);
-        this->push(nouv);
+
     }
     else if(typeid(*this->top()) ==typeid(CRationnel)){
         CRationnel &c1 = (CRationnel&) *this->top();
         nouv = new CRationnel(c1);
-        this->push(nouv);
     }
     else if(typeid(*this->top()) ==typeid(CReel)){
         CReel &c1 = (CReel&) *this->top();
         nouv = new CReel(c1);
-        this->push(nouv);
     }
     else if(typeid(*this->top()) ==typeid(CComplexe)){
         CComplexe &c1 = (CComplexe&) *this->top();
         nouv = new CComplexe(c1);
-        this->push(nouv);
     }
     else if(typeid(*this->top()) ==typeid(CExpression)){
         CExpression &c1 = (CExpression&) *this->top();
         nouv = new CExpression(c1);
-        this->push(nouv);
     }
+   this->cast(nouv);
+   this->push(nouv);
    CommandeBasic * cmd = new CommandeBasic(this);
    cmd->addNew(nouv);
    this->saveCommande(cmd);
@@ -458,7 +470,7 @@ void Pile::fPOW(){
                 cmd->addNew(res);
                 this->saveCommande(cmd);
             }
-            if(typeid(*this->top()) ==typeid(CRationnel)){
+            else if(typeid(*this->top()) ==typeid(CRationnel)){
                 Constante* nbr = this->pop();
                 CEntier *c1 = (CEntier*) pow;
                 CRationnel *c2 = (CRationnel*) nbr;
@@ -470,6 +482,7 @@ void Pile::fPOW(){
                     resu2 = resu2*c2->getDenom();}
 
                 Constante * res = (Constante * ) new CRationnel(resu, resu2);
+                this->cast(res);
                 this->push(res);
                 CommandeBasic * cmd = new CommandeBasic(this);
                 cmd->addOld(pow);
@@ -478,7 +491,7 @@ void Pile::fPOW(){
                 this->saveCommande(cmd);
 
             }
-            if(typeid(*this->top()) ==typeid(CReel)){
+            else if(typeid(*this->top()) ==typeid(CReel)){
                 Constante* nbr = this->pop();
                 CEntier *c1 = (CEntier*) pow;
                 CReel *c2 = (CReel*) nbr;
@@ -486,6 +499,7 @@ void Pile::fPOW(){
                 for(int i =1; i<=c1->getValue() ; i++){
                     resu = resu*c2->getValue();}
                 Constante * res = (Constante * ) new CReel(resu);
+                this->cast(res);
                 this->push(res);
                 CommandeBasic * cmd = new CommandeBasic(this);
                 cmd->addOld(pow);
@@ -532,318 +546,514 @@ void Pile::fMOD(){
 } // modulo (entier)
 
 void Pile::fSIGN(){
-
-    if(typeid(*this->top()) ==typeid(CEntier)){
+    if(!this->isEmpty()){
         Constante* nbr = this->pop();
-        CEntier *c1 = (CEntier*) nbr;
-        c1->setValue(-1*c1->getValue());
-        Constante* res = c1;
+        CEntier *c1 = new CEntier(0);
+        Constante* res = c1->operator -(*nbr);
+        this->cast(res);
         this->push(res);
-          }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
-        CRationnel *c1 = (CRationnel*) nbr;
-        c1->setNum(-1*c1->getNum());
-        Constante* res = c1;
-        this->push(res); }
-    if(typeid(*this->top()) ==typeid(CComplexe)){
-        Constante* nbr = this->pop();
-        CComplexe *c1 = (CComplexe*) nbr;
-//TODO
-        Constante* res = c1;
-        this->push(res); }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(-1*c1->getValue());
-        Constante* res = c1;
-        this->push(res); }
+        delete c1;
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(nbr);
+        cmd->addNew(res);
+        this->saveCommande(cmd);
+
+    }
+    else{
+        //EXPRESSION
+        throw std::logic_error( "INV : la pile est vide");
+    }
 
 
-} // inversion du signe (entier, rationnel, réel, complexe)
+} // inversion du signe (entier, rationnel, réel, complexe, expression)
 
 
 void Pile::fSIN(){
+
+    if(this->isEmpty()){
+        throw std::logic_error( "SIN : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = sin(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = sin((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = sin(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "SIN : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = sin(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
+
 
 } // sinus (entier, rationnel, réel)
 
 void Pile::fCOS(){
+    if(this->isEmpty()){
+        throw std::logic_error( "COS : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = cos(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = cos((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = cos(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "COS : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = cos(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // cosinus (entier, rationnel, réel)
 
 void Pile::fTAN(){
+    if(this->isEmpty()){
+        throw std::logic_error( "TAN : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = tan(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = tan((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = tan(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "TAN : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = tan(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // tangente (entier, rationnel, réel)
 
 void Pile::fSINH(){
+    if(this->isEmpty()){
+        throw std::logic_error( "SINH : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = sinh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = sinh((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = sinh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "SINH : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = sinh(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // sinus hyperbolique (entier, rationnel, réel)
 
 void Pile::fCOSH(){
+    if(this->isEmpty()){
+        throw std::logic_error( "COSH : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = cosh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = cosh((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = cosh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "COSH : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = cosh(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // cosinus hyperbolique (entier, rationnel, réel)
 
 void Pile::fTANH(){
+    if(this->isEmpty()){
+        throw std::logic_error( "TANH : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = tanh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = tanh((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = tanh(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "TANH : le parametre est de type invalide");
     }
+
+    if(isDegre()){
+        val = val*M_PI*2/(float)380;
+    }
+    val = tanh(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // tangente hyperbolique (entier, rationnel, réel)
 
 
 void Pile::fLN(){
+    if(this->isEmpty()){
+        throw std::logic_error( "LN : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = log(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = log((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = log(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "LN : le parametre est de type invalide");
     }
+
+
+    val = log(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // logarithme népérien (entier, rationnel, réel)
 
 void Pile::fLOG(){
+    if(this->isEmpty()){
+        throw std::logic_error( "LOG : la pile est vide");
+
+    }
+
+    float val = 0;
+    Constante* nbr;
+
     if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
+        nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        float res = log10(c1->getValue());
-        this->push((Constante*)new CReel(res));
+         val = c1->getValue();
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
+        nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        float res = log10((float)(c1->getNum()/c1->getDenom()));
-        this->push((Constante*)new CReel(res));
+        val = (float)(c1->getNum()/c1->getDenom());
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
+    else if(typeid(*this->top()) ==typeid(CReel)){
+        nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        float res = log10(c1->getValue());
-        this->push((Constante*)new CReel(res));
+        val = c1->getValue();
+    }else{
+        throw std::logic_error( "LOG : le parametre est de type invalide");
     }
+
+
+    val = log10(val);
+
+    Constante * res = (Constante*)new CReel(val);
+    this->cast(res);
+    this->push(res);
+
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // logarithme décimal (entier, rationnel, réel)
 
 void Pile::fINV(){
-    if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
-        CEntier *c1 = (CEntier*) nbr;
-        float res = 1.0/(float)(c1->getValue());
-        this->push((Constante*)new CReel(res));
-          }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
-        CRationnel *c1 = (CRationnel*) nbr;
-        int inter = c1->getNum();
-        c1->setNum(c1->getDenom());
-        c1->setDenom(inter);
-        this->push((Constante*)c1);
+
+    if(this->isEmpty()){
+        throw std::logic_error( "INV : la pile est vide");
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(1.0/c1->getValue());
-        this->push((Constante*)c1);
-    }
+
+    Constante* nbr = this->pop();
+    CEntier * c= new CEntier(1);
+    Constante * res = c->operator /(*nbr);
+    this->cast(res);
+    this->push(res);
+    delete c;
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
+
 } // inverse (entier, rationnel, réel)
 
 void Pile::fSQRT(){
+
+    if(this->isEmpty()){
+        throw std::logic_error( "SQRT : la pile est vide");
+
+    }
+
+
     if(typeid(*this->top()) ==typeid(CEntier)){
         Constante* nbr = this->pop();
         CEntier *c1 = (CEntier*) nbr;
-        this->push((Constante*)new CReel((float)sqrt(c1->getValue())));
+        Constante * res =(Constante*)new CReel((float)sqrt(c1->getValue()));
+        this->push(res);
+
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(nbr);
+        cmd->addNew(res);
+        this->saveCommande(cmd);
+
           }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
+    else if(typeid(*this->top()) ==typeid(CRationnel)){
         Constante* nbr = this->pop();
         CRationnel *c1 = (CRationnel*) nbr;
-        this->push((Constante*)new CReel((float)sqrt(c1->getNum()/(float)c1->getDenom())));
+        Constante * res = (Constante*)new CReel((float)sqrt(c1->getNum()/(float)c1->getDenom()));
+        this->cast(res);
+        this->push(res);
+
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(nbr);
+        cmd->addNew(res);
+        this->saveCommande(cmd);
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
+    else if(typeid(*this->top()) ==typeid(CReel)){
         Constante* nbr = this->pop();
         CReel *c1 = (CReel*) nbr;
-        this->push((Constante*)new CReel((float)sqrt(c1->getValue())));
+        Constante * res =(Constante*)new CReel((float)sqrt(c1->getValue()));
+        this->cast(res);
+        this->push(res);
+
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(nbr);
+        cmd->addNew(res);
+        this->saveCommande(cmd);
+
+    }else{
+        throw std::logic_error( "SQRT : le parametre est de type invalide");
+
     }
 } // racine carré (entier, rationnel, réel)
 
 void Pile::fSQR(){
-    if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
-        CEntier *c1 = (CEntier*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue());
-        this->push((Constante*)c1);
-          }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
-        CRationnel *c1 = (CRationnel*) nbr;
-        c1->setNum(c1->getNum()*c1->getNum());
-        c1->setDenom(c1->getDenom()*c1->getDenom());
-        this->push((Constante*)c1);
+
+    if(this->isEmpty()){
+        throw std::logic_error( "SQR : la pile est vide");
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue());
-        this->push((Constante*)c1);
-    }
-    /*if(typeid(*this->top()) ==typeid(CComplexe)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue());
-        this->push((Constante*)c1;
-    }*/
+
+
+    Constante* nbr = this->pop();
+    Constante * res = nbr->operator *(*nbr);
+    this->cast(res);
+    this->push(res);
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // fonction carré (entier, rationnel, réel, complexe)
 
 void Pile::fCUBE(){
-    if(typeid(*this->top()) ==typeid(CEntier)){
-        Constante* nbr = this->pop();
-        CEntier *c1 = (CEntier*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue()*c1->getValue());
-        this->push((Constante*)c1);
-          }
-    if(typeid(*this->top()) ==typeid(CRationnel)){
-        Constante* nbr = this->pop();
-        CRationnel *c1 = (CRationnel*) nbr;
-        c1->setNum(c1->getNum()*c1->getNum()*c1->getNum());
-        c1->setDenom(c1->getDenom()*c1->getDenom()*c1->getDenom());
-        this->push((Constante*)c1);
+    if(this->isEmpty()){
+        throw std::logic_error( "CUBE : la pile est vide");
+
     }
-    if(typeid(*this->top()) ==typeid(CReel)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue()*c1->getValue());
-        this->push((Constante*)c1);
-    }
-    /*if(typeid(*this->top()) ==typeid(CComplexe)){
-        Constante* nbr = this->pop();
-        CReel *c1 = (CReel*) nbr;
-        c1->setValue(c1->getValue()*c1->getValue());
-        this->push((Constante*)c1;
-    }*/
+    Constante* nbr = this->pop();
+    Constante * res1 = nbr->operator *(*nbr);
+    Constante * res = res1->operator *(*nbr);
+    this->cast(res);
+    this->push(res);
+
+    delete res1;
+    CommandeBasic * cmd = new CommandeBasic(this);
+    cmd->addOld(nbr);
+    cmd->addNew(res);
+    this->saveCommande(cmd);
 } // fonction cube (entier, rationnel, réel, complexe)
 
 void Pile::fact(){
+
+    if(this->isEmpty()){
+        throw std::logic_error( "FACT : la pile est vide");
+
+    }
+
     if(typeid(*this->top()) ==typeid(CEntier)){
         Constante* nbr = this->pop();
-        CEntier *c1 = (CEntier*) nbr;
+        CEntier *c1 = new CEntier(*((CEntier*) nbr));
 
         int n = c1->getValue();
         int f = 1;
         while (n > 1) f *= n--;
 
         c1->setValue(f);
-        this->push((Constante*)c1);
-          }
+        Constante * res = (Constante*)c1;
+        this->cast(res);
+        this->push(res);
+        CommandeBasic * cmd = new CommandeBasic(this);
+        cmd->addOld(nbr);
+        cmd->addNew(res);
+        this->saveCommande(cmd);
+
+    }else{
+        throw std::logic_error( "FACT : le parametre doit etre un entier");
+    }
 } // factorielle (entier)
 
-void Pile::fEVAL(){
 
-} // évaluation d'une expression (Expression)

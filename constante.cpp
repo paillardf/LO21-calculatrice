@@ -114,7 +114,7 @@ Constante * CReel::operator+(Constante & c){
 Constante * CComplexe::operator+(Constante & c){
     if(typeid(c) ==typeid(CEntier)){
         CEntier &c1 = (CEntier&) c;
-        return (Constante *)new CComplexe(this->operator +(c1),getIm());
+        return (Constante *)new CComplexe(c1+(*getRe()) ,getIm());
 
     }
   if(typeid(c) ==typeid(CRationnel)){
@@ -154,8 +154,8 @@ Constante * CEntier::operator-(Constante& c){
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
-            c1.setValue(-1*getValue());
-            return c1.operator +(*this);
+            float res = this->getValue()-c1.getValue();
+            return new CReel(res);
     }
     if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
@@ -179,8 +179,8 @@ Constante * CRationnel::operator-(Constante & c){
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
-            c1.setValue(-1*c1.getValue());
-            return c1.operator +(*this);
+            float res = (float)this->getNum()/(float)this->getDenom() - c1.getValue();
+            return new CReel(res);
     }
    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
@@ -251,19 +251,18 @@ Constante * CExpression::operator-(Constante & c){
 Constante * CEntier::operator/(Constante& c){
     if(typeid(c) == typeid(CEntier)){
             CEntier &c1 = (CEntier&) c;
-            return (Constante *) new CEntier((int)(getValue()/c1.getValue()));
+            return (Constante *) new CRationnel(getValue() , c1.getValue());
     }
     if(typeid(c) == typeid(CRationnel)){
             CRationnel &c1 = (CRationnel&) c;
-            int inter = c1.getNum();
-            c1.setNum(c1.getDenom());
-            c1.setDenom(inter);
-            return c1.operator *(*this);
+            int num = c1.getDenom()*this->getValue();
+            int denom = c1.getNum();
+            return (Constante *) new CRationnel(num, denom);
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
-            c1.setValue(1/c1.getValue());
-            return c1.operator *(*this);
+            float res = ((float) this->getValue())/c1.getValue();
+            return (Constante *) new CReel(res);
     }
    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
@@ -286,8 +285,9 @@ Constante * CRationnel::operator/(Constante & c){
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
-            c1.setValue(1/c1.getValue());
-            return c1.operator *(*this);
+            float den = ((float) this->getDenom())*c1.getValue();
+            float res = ((float) this->getNum())/den;
+            return (Constante *) new CReel(res);
     }
    if(typeid(c) == typeid(CComplexe)){
             CComplexe &c1 = (CComplexe&) c;
@@ -307,8 +307,8 @@ Constante * CReel::operator/(Constante & c){
     }
     if(typeid(c) == typeid(CRationnel)){
             CRationnel &c1 = (CRationnel&) c;
-            float test = (getValue() * (float)c1.getDenom())/(float)c1.getNum();
-            return (Constante *) new CReel(test);
+            float res = (getValue() * (float)c1.getDenom())/(float)c1.getNum();
+            return (Constante *) new CReel(res);
     }
     if(typeid(c) == typeid(CReel)){
             CReel &c1 = (CReel&) c;
