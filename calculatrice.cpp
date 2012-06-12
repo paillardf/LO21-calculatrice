@@ -1,8 +1,10 @@
 #include "calculatrice.h"
 #include "ui_calculatrice.h"
 
+
 const QString Calculatrice::AFFICHAGE_NAME = QString("affichage_pile");
 
+Calculatrice *Calculatrice::_singleton = NULL;
 
 Calculatrice::Calculatrice(QWidget *parent) :
     QMainWindow(parent),
@@ -10,7 +12,10 @@ Calculatrice::Calculatrice(QWidget *parent) :
     onglet(0)
 {
 //Qt::Dialog|
+    setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::MSWindowsFixedSizeDialogHint);
+
+
     ui->setupUi(this);
     connect(ui->addTab, SIGNAL(clicked()), this, SLOT(creerTab()));
     connect(ui->nbElementPile, SIGNAL(valueChanged(int)), this, SLOT(afficher(int)));
@@ -55,7 +60,9 @@ Calculatrice::Calculatrice(QWidget *parent) :
     connect(ui->BtVirgule, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtVirgule, ",");
     connect(ui->BtSigne, SIGNAL(clicked()), mapper, SLOT(map()));
-    mapper->setMapping(ui->BtSigne, "INV");
+    mapper->setMapping(ui->BtSigne, "SIGN");
+    connect(ui->BtInv, SIGNAL(clicked()), mapper, SLOT(map()));
+    mapper->setMapping(ui->BtInv, "INV");
     connect(ui->BtMult, SIGNAL(clicked()), mapper, SLOT(map()));
     mapper->setMapping(ui->BtMult, "*");
     connect(ui->BtDiv, SIGNAL(clicked()), mapper, SLOT(map()));
@@ -114,11 +121,64 @@ Calculatrice::Calculatrice(QWidget *parent) :
     mapper->setMapping(ui->BtEval, "EVAL");
 
     connect(mapper, SIGNAL(mapped(const QString &)), this, SLOT(ecrire(const QString &)));
-    creerTab();
+    QFile file("xml_doc.xml");
+       if (!file.open(QIODevice::ReadOnly)){
+           creerTab();
+       }else{
+         Xml_Dom(this);
+       }
+
 
 }
 
+void Calculatrice::sauvegarde(){
 
+    EcritureDom* save = new EcritureDom();
+
+    if(ui->complexeBox->isChecked()){
+        save->ajoutpara("Complexe");
+    }
+    if(ui->radioButton_Degre->isChecked()){
+        save->ajoutpara("Degre");
+    }
+    if(ui->radioButton_Entier->isChecked()){
+        save->ajoutpara("Entier");
+    }
+    if(ui->radioButton_Radian->isChecked()){
+        save->ajoutpara("Radian");
+    }
+    if(ui->radioButton_Rationnel->isChecked()){
+        save->ajoutpara("Rationnel");
+    }
+    if(ui->radioButton_Reel->isChecked()){
+        save->ajoutpara("Reel");
+    }
+
+    for(int i=0; i<this->onglet.size(); i++){
+        save->ajoutpile((this->onglet.at(i)));
+    }
+
+    delete save;
+
+}
+void Calculatrice::chgEntier(){
+    ui->radioButton_Entier->setChecked(true);
+}
+void Calculatrice::chgRationnel(){
+    ui->radioButton_Rationnel->setChecked(true);
+}
+void Calculatrice::chgReel(){
+    ui->radioButton_Reel->setChecked(true);
+}
+void Calculatrice::chgComplexe(){
+    ui->complexeBox->setChecked(true);
+}
+void Calculatrice::chgDegre(){
+    ui->radioButton_Degre->setChecked(true);
+}
+void Calculatrice::chgRadian(){
+    ui->radioButton_Radian->setChecked(true);
+}
 
 void Calculatrice::analyse(const QString & txt){
     QString txtTemp = txt;
@@ -205,6 +265,9 @@ void Calculatrice::analyse(const QString & txt){
             }else if(txtTemp.left(3).compare("INV")==0){
                 pileActive()->fINV();
                 txtTemp = txtTemp.right(pos-2);
+            }else if(txtTemp.left(4).compare("SIGN")==0){
+                pileActive()->fSIGN();
+                txtTemp = txtTemp.right(pos-3);
             }else if(txtTemp.left(4).compare("SWAP")==0){
                 pileActive()->swap();
                 txtTemp = txtTemp.right(pos-3);
@@ -252,11 +315,8 @@ void Calculatrice::fEVAL(){
             CommandeEval * c = new CommandeEval(p, nbr);
             p->saveCommande(c);
             p->setExecutionCommande(2);// ON RECUPERE TOUTES LES COMMANDES ENREGISTRE
-            qDebug()<<"Commande Mise en place";
             this->analyse(nbr->getValuetoString());
-            qDebug()<<"Apres analyse";
             p->setExecutionCommande(0);
-            qDebug()<<"Fin";
         }catch ( std::logic_error e ) // ERREUR PENDANT L EVALUATION DE L EXPRESSION
         {
           p->setExecutionCommande(0);
@@ -455,6 +515,9 @@ void Calculatrice::redimentionner(bool t){
 
 Calculatrice::~Calculatrice()
 {
+
+    this->sauvegarde();
+
     for(int i = 0; i < onglet.size(); i++){
         delete onglet.at(i);
     }

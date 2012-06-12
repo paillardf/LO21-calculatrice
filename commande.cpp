@@ -19,6 +19,7 @@ void CommandeEval::Undo(){
 
 
     CommandeBasic::~CommandeBasic(){
+        this->Undo();
         while(!newConst.isEmpty()){
             Constante * c = newConst.pop();
             delete c;
@@ -61,7 +62,10 @@ void CommandeEval::Undo(){
 
 
     CommandeSwap::~CommandeSwap(){
-
+        while(!oldConst.isEmpty()){
+            Constante * c = oldConst.pop();
+            delete c;
+        }
     }
 
 

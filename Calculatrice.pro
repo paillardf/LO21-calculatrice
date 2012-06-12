@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT += xml
 TARGET = Calculatrice
 TEMPLATE = app
 
@@ -14,11 +14,15 @@ SOURCES += main.cpp\
         calculatrice.cpp \
     pile.cpp \
     constante.cpp \
-    commande.cpp
+    commande.cpp \
+    ecrituredom.cpp \
+    xml_dom.cpp
 
 HEADERS  += calculatrice.h \
     pile.h \
     constante.h \
-    commande.h
+    commande.h \
+    ecrituredom.h \
+    xml_dom.h
 
 FORMS    += calculatrice.ui

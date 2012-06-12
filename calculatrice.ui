@@ -518,6 +518,16 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="3">
+         <widget class="QPushButton" name="BtInv">
+          <property name="text">
+           <string>INV</string>
+          </property>
+          <property name="shortcut">
+           <string>%</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="0" column="3">

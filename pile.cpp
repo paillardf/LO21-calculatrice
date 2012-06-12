@@ -15,9 +15,15 @@ Pile::Pile(QLabel * aff, QRadioButton * _btEntier,QRadioButton * _btRationnel,QR
 
 Pile::~Pile()
 {
+    while(posCommande <=listeCommande.size()-1){
+        this->annuler();
+    }
     while(!listeCommande.empty()){
         Commande * c = listeCommande.pop();
         delete c;
+    }
+    while(!this->empty()){
+        delete this->pop();
     }
 
 }
@@ -43,7 +49,7 @@ void Pile::saveCommande(Commande * c){
 
 void Pile::annuler()
 {
-    if(posCommande <=listeCommande.size()-1){//Pas de commande a retablir
+    if(posCommande <=listeCommande.size()-1){//verification si commande a retablir
         executionCommande = 1;//On empeche de nouvelle commande de s'enregistrer pendant l'execution d'une commande
         Commande * c = listeCommande.at(listeCommande.size()-1-posCommande);
         c->Undo();
@@ -67,7 +73,7 @@ void Pile::retablir(){
 
 
 //############# OPERATION ##################
-Pile& Pile::clone(Pile & p) const{
+void Pile::clone(Pile & p) const{
 
     for(int i = 0; i<this->size(); i++){
         Constante * c = this->at(i);
@@ -118,9 +124,9 @@ void Pile::cast(Constante* & cst){
         CRationnel * tmp = (CRationnel*) cst;
         if(isEntier()){
 
-            cst = new CEntier(tmp->getNum()/tmp->getDenom());
+            cst = new CEntier((float)tmp->getNum()/(float)tmp->getDenom());
         }else {
-            cst = new CReel(tmp->getNum()/tmp->getDenom());
+            cst = new CReel((float)tmp->getNum()/(float)tmp->getDenom());
         }
         delete tmp;
 
@@ -426,6 +432,19 @@ void Pile::fDivision(){
     Constante* inter2 = this->pop();
     Constante* res;
     try {
+        if(typeid(*inter) ==typeid(CEntier)){
+            if(((CEntier * )inter)->getValue()==0){
+                throw std::logic_error("ERROR");
+            }
+        }else if(typeid(*inter) ==typeid(CRationnel)){
+            if(((CRationnel * )inter)->getNum()==0){
+                throw std::logic_error("ERROR");
+            }
+        }else if(typeid(*inter) ==typeid(CReel)){
+            if(((CReel * )inter)->getValue()==0){
+                throw std::logic_error("ERROR");
+            }
+        }
          res = inter2->operator /(*inter);
     } catch (std::exception e) { //ArithmeticException TODO
          this->push(inter2);
@@ -448,7 +467,10 @@ void Pile::fDivision(){
     }
 
 void Pile::fPOW(){
+    if(this->size()<2){
+        throw std::logic_error( "POW : Il n'y a pas assez de parametres");
 
+    }
 
     if(typeid(*this->top()) ==typeid(CEntier)){
          Constante* pow = this->pop();
@@ -519,12 +541,22 @@ void Pile::fPOW(){
 
 
 void Pile::fMOD(){
+    if(this->size()<2){
+        throw std::logic_error( "MODULO : Il n'y a pas assez de parametres");
+
+    }
     if(typeid(*this->top()) ==typeid(CEntier)){
          Constante* mod = this->pop();
             if(typeid(*this->top()) ==typeid(CEntier)){
                 Constante* nbr = this->pop();
                 CEntier *c1 = (CEntier*) mod;
+                if(c1->getValue()==0){
+                    this->push(nbr);
+                    this->push(mod);
+                    throw std::logic_error( "POW : le parametre ne peux pas être 0");
+                }
                 CEntier *c2 = (CEntier*) nbr;
+
 
                 Constante* res= new CEntier(c2->getValue()%c1->getValue());
                 this->push(res);
@@ -561,7 +593,7 @@ void Pile::fSIGN(){
     }
     else{
         //EXPRESSION
-        throw std::logic_error( "INV : la pile est vide");
+        throw std::logic_error( "SIGN : la pile est vide");
     }
 
 
