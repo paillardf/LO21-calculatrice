@@ -24,7 +24,7 @@ class Xml_Dom : public QWidget
         public:
     //! constructeur.
     /*!
-      \param pointeur sur la fenetre de la calculatrice
+      \param c pointeur sur la fenetre de la calculatrice
       lit puis construit les piles a l'ouverture de l'application
     */
         Xml_Dom(Calculatrice* c);

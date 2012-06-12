@@ -44,7 +44,7 @@ private:
 public:
     //! constructeur.
         /*!
-          \param Pointeur vers la pile stockant la commande
+          \param p Pointeur vers la pile stockant la commande
         */
     CommandeBasic(Pile * p):pile(p){}
     //! destructeur.
@@ -62,13 +62,13 @@ public:
 
     //! ajoute une constante a la pile oldConst.
         /*!
-          \param Pointeur vers la constante a stocker
+          \param c Pointeur vers la constante a stocker
         */
     void addOld(Constante * c);
 
     //! ajoute une constante a la pile newConst.
         /*!
-          \param Pointeur vers la constante a stocker
+          \param c Pointeur vers la constante a stocker
         */
     void addNew(Constante * c);
 
@@ -131,7 +131,7 @@ public:
 
         //! empile les pointeurs de commande dans pCommande
     /*!
-      \param pointeur vers la commande a stocker
+      \param c pointeur vers la commande a stocker
     */
     void addCommande(Commande * c){
         pCommande.push(c);
@@ -178,7 +178,7 @@ public:
     }
     //! ajoute la constante sur la pile oldConst
         /*!
-          \param Pointeur vers la Constante a stocker
+          \param c Pointeur vers la Constante a stocker
         */
     void addOld(Constante * c);
     //! effectue un swap sur la pile

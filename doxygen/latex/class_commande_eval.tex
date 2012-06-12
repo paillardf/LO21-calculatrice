@@ -1,0 +1,127 @@
+\hypertarget{class_commande_eval}{\section{Commande\-Eval Class Reference}
+\label{class_commande_eval}\index{Commande\-Eval@{Commande\-Eval}}
+}
+
+
+\hyperlink{class_commande_eval}{Commande\-Eval} class.  
+
+
+
+
+{\ttfamily \#include $<$commande.\-h$>$}
+
+Inheritance diagram for Commande\-Eval\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_commande_eval}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_commande_eval_ae7f29a48c48f9aaa6f218cb1642630eb}{Commande\-Eval} (\hyperlink{class_pile}{Pile} $\ast$p, \hyperlink{class_constante}{Constante} $\ast$c)
+\begin{DoxyCompactList}\small\item\em constructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_commande_eval_ac545d7ad1c16bc7780132b1be79a137f}{$\sim$\-Commande\-Eval} ()
+\begin{DoxyCompactList}\small\item\em destructeur. \end{DoxyCompactList}\item 
+\hypertarget{class_commande_eval_ae16c7e11ada97aba12e9dfbaab0e8fa6}{void \hyperlink{class_commande_eval_ae16c7e11ada97aba12e9dfbaab0e8fa6}{Vider} ()}\label{class_commande_eval_ae16c7e11ada97aba12e9dfbaab0e8fa6}
+
+\begin{DoxyCompactList}\small\item\em vide les piles de la commande. \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_eval_ad0055f5193a3d5fc0f7a3ee9fdcb09cb}{add\-Commande} (\hyperlink{class_commande}{Commande} $\ast$c)
+\begin{DoxyCompactList}\small\item\em empile les pointeurs de commande dans p\-Commande \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_eval_a9a719eb128529581ef697284231bc805}{Do} ()
+\begin{DoxyCompactList}\small\item\em executer l'operation \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_eval_a7bb0e495e43a30e5b7f0bf0d47cd37cf}{Undo} ()
+\begin{DoxyCompactList}\small\item\em executer l'operation inverse \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_commande_eval}{Commande\-Eval} class. 
+
+commande de la fonction eval. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_commande_eval_ae7f29a48c48f9aaa6f218cb1642630eb}{\index{Commande\-Eval@{Commande\-Eval}!Commande\-Eval@{Commande\-Eval}}
+\index{Commande\-Eval@{Commande\-Eval}!CommandeEval@{Commande\-Eval}}
+\subsubsection[{Commande\-Eval}]{\setlength{\rightskip}{0pt plus 5cm}Commande\-Eval\-::\-Commande\-Eval (
+\begin{DoxyParamCaption}
+\item[{{\bf Pile} $\ast$}]{p, }
+\item[{{\bf Constante} $\ast$}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_commande_eval_ae7f29a48c48f9aaa6f218cb1642630eb}
+
+
+constructeur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & pointeur la constante expression evaluee \\
+\hline
+{\em p} & pointeur vers la pile stockant la commande \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_commande_eval_ac545d7ad1c16bc7780132b1be79a137f}{\index{Commande\-Eval@{Commande\-Eval}!$\sim$\-Commande\-Eval@{$\sim$\-Commande\-Eval}}
+\index{$\sim$\-Commande\-Eval@{$\sim$\-Commande\-Eval}!CommandeEval@{Commande\-Eval}}
+\subsubsection[{$\sim$\-Commande\-Eval}]{\setlength{\rightskip}{0pt plus 5cm}Commande\-Eval\-::$\sim$\-Commande\-Eval (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_commande_eval_ac545d7ad1c16bc7780132b1be79a137f}
+
+
+destructeur. 
+
+detruit la commande et les commandes de la pile p\-Commande 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_commande_eval_ad0055f5193a3d5fc0f7a3ee9fdcb09cb}{\index{Commande\-Eval@{Commande\-Eval}!add\-Commande@{add\-Commande}}
+\index{add\-Commande@{add\-Commande}!CommandeEval@{Commande\-Eval}}
+\subsubsection[{add\-Commande}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Eval\-::add\-Commande (
+\begin{DoxyParamCaption}
+\item[{{\bf Commande} $\ast$}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_commande_eval_ad0055f5193a3d5fc0f7a3ee9fdcb09cb}
+
+
+empile les pointeurs de commande dans p\-Commande 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & pointeur vers la commande a stocker \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_commande_eval_a9a719eb128529581ef697284231bc805}{\index{Commande\-Eval@{Commande\-Eval}!Do@{Do}}
+\index{Do@{Do}!CommandeEval@{Commande\-Eval}}
+\subsubsection[{Do}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Eval\-::\-Do (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_commande_eval_a9a719eb128529581ef697284231bc805}
+
+
+executer l'operation 
+
+execute l'ensemble des \hyperlink{class_commande_eval_a9a719eb128529581ef697284231bc805}{Do()} des commandes de la pile 
+
+Implements \hyperlink{class_commande_a9fc0c740359ac4f0d34b9f109e3c0155}{Commande}.
+
+\hypertarget{class_commande_eval_a7bb0e495e43a30e5b7f0bf0d47cd37cf}{\index{Commande\-Eval@{Commande\-Eval}!Undo@{Undo}}
+\index{Undo@{Undo}!CommandeEval@{Commande\-Eval}}
+\subsubsection[{Undo}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Eval\-::\-Undo (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_commande_eval_a7bb0e495e43a30e5b7f0bf0d47cd37cf}
+
+
+executer l'operation inverse 
+
+execute l'ensemble des \hyperlink{class_commande_eval_a7bb0e495e43a30e5b7f0bf0d47cd37cf}{Undo()} des commandes de la pile 
+
+Implements \hyperlink{class_commande_a8523106c6ca6cc7c04323a641c16e563}{Commande}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/commande.\-h\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/commande.\-cpp\end{DoxyCompactItemize}

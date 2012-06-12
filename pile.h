@@ -109,7 +109,7 @@ public:
 
     //! cast la constante passe en argument en fonction des types actifs
     /*!
-        \param constante a caster
+        \param cst constante a caster
     */
     void cast(Constante* & cst);
     //! affiche les tailleMax premiers elements de la pile
@@ -124,7 +124,7 @@ public:
     void retablir();
     //! enregistre une commande
     /*!
-        \param Pointeur de commande a enregistrer
+        \param c Pointeur de commande a enregistrer
     */
     void saveCommande(Commande *c);
 

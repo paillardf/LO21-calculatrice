@@ -72,7 +72,7 @@ public Q_SLOTS  :
     void retablir();
     //! redimentionne la fenetre de la Calculatrice
     /*!
-          \param boolean pour les deux positions.
+          \param t boolean pour les deux positions.
      */
     void redimentionner(bool);
     

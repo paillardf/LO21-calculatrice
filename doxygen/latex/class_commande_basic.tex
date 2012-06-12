@@ -1,0 +1,142 @@
+\hypertarget{class_commande_basic}{\section{Commande\-Basic Class Reference}
+\label{class_commande_basic}\index{Commande\-Basic@{Commande\-Basic}}
+}
+
+
+\hyperlink{class_commande_basic}{Commande\-Basic} class.  
+
+
+
+
+{\ttfamily \#include $<$commande.\-h$>$}
+
+Inheritance diagram for Commande\-Basic\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_commande_basic}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_commande_basic_a06896fb033075c9ad816cdc054cffa7c}{Commande\-Basic} (\hyperlink{class_pile}{Pile} $\ast$p)
+\begin{DoxyCompactList}\small\item\em constructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_commande_basic_a0e14f93e2dac91cf302ab1eeefd72efc}{$\sim$\-Commande\-Basic} ()
+\begin{DoxyCompactList}\small\item\em destructeur. \end{DoxyCompactList}\item 
+\hypertarget{class_commande_basic_ad249aebd20fc1e2971daa3c1b915920c}{void \hyperlink{class_commande_basic_ad249aebd20fc1e2971daa3c1b915920c}{Vider} ()}\label{class_commande_basic_ad249aebd20fc1e2971daa3c1b915920c}
+
+\begin{DoxyCompactList}\small\item\em vide les piles de la commande. \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_basic_aee8cf6044f00f87f26995ab28bfa5e91}{add\-Old} (\hyperlink{class_constante}{Constante} $\ast$c)
+\begin{DoxyCompactList}\small\item\em ajoute une constante a la pile old\-Const. \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_basic_aedeb00c48e9990847cf54753acb93d7e}{add\-New} (\hyperlink{class_constante}{Constante} $\ast$c)
+\begin{DoxyCompactList}\small\item\em ajoute une constante a la pile new\-Const. \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_basic_a1a0e1350aa80995f26dec83e56cb27e7}{Do} ()
+\begin{DoxyCompactList}\small\item\em executer l'operation \end{DoxyCompactList}\item 
+void \hyperlink{class_commande_basic_ab5c5afa269142fc2aa49987b7ae31601}{Undo} ()
+\begin{DoxyCompactList}\small\item\em executer l'operation inverse \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_commande_basic}{Commande\-Basic} class. 
+
+traite la majorite des commandes de la calculatrice. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_commande_basic_a06896fb033075c9ad816cdc054cffa7c}{\index{Commande\-Basic@{Commande\-Basic}!Commande\-Basic@{Commande\-Basic}}
+\index{Commande\-Basic@{Commande\-Basic}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{Commande\-Basic}]{\setlength{\rightskip}{0pt plus 5cm}Commande\-Basic\-::\-Commande\-Basic (
+\begin{DoxyParamCaption}
+\item[{{\bf Pile} $\ast$}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_commande_basic_a06896fb033075c9ad816cdc054cffa7c}
+
+
+constructeur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Pointeur vers la pile stockant la commande \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_commande_basic_a0e14f93e2dac91cf302ab1eeefd72efc}{\index{Commande\-Basic@{Commande\-Basic}!$\sim$\-Commande\-Basic@{$\sim$\-Commande\-Basic}}
+\index{$\sim$\-Commande\-Basic@{$\sim$\-Commande\-Basic}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{$\sim$\-Commande\-Basic}]{\setlength{\rightskip}{0pt plus 5cm}Commande\-Basic\-::$\sim$\-Commande\-Basic (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_commande_basic_a0e14f93e2dac91cf302ab1eeefd72efc}
+
+
+destructeur. 
+
+detruit la commande et les constantes de la pile new\-Const 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_commande_basic_aedeb00c48e9990847cf54753acb93d7e}{\index{Commande\-Basic@{Commande\-Basic}!add\-New@{add\-New}}
+\index{add\-New@{add\-New}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{add\-New}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Basic\-::add\-New (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_commande_basic_aedeb00c48e9990847cf54753acb93d7e}
+
+
+ajoute une constante a la pile new\-Const. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Pointeur vers la constante a stocker \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_commande_basic_aee8cf6044f00f87f26995ab28bfa5e91}{\index{Commande\-Basic@{Commande\-Basic}!add\-Old@{add\-Old}}
+\index{add\-Old@{add\-Old}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{add\-Old}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Basic\-::add\-Old (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_commande_basic_aee8cf6044f00f87f26995ab28bfa5e91}
+
+
+ajoute une constante a la pile old\-Const. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & Pointeur vers la constante a stocker \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_commande_basic_a1a0e1350aa80995f26dec83e56cb27e7}{\index{Commande\-Basic@{Commande\-Basic}!Do@{Do}}
+\index{Do@{Do}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{Do}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Basic\-::\-Do (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_commande_basic_a1a0e1350aa80995f26dec83e56cb27e7}
+
+
+executer l'operation 
+
+depile les constantes stocker dans old\-Const empile les constantes nouvelles de pile 
+
+Implements \hyperlink{class_commande_a9fc0c740359ac4f0d34b9f109e3c0155}{Commande}.
+
+\hypertarget{class_commande_basic_ab5c5afa269142fc2aa49987b7ae31601}{\index{Commande\-Basic@{Commande\-Basic}!Undo@{Undo}}
+\index{Undo@{Undo}!CommandeBasic@{Commande\-Basic}}
+\subsubsection[{Undo}]{\setlength{\rightskip}{0pt plus 5cm}void Commande\-Basic\-::\-Undo (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_commande_basic_ab5c5afa269142fc2aa49987b7ae31601}
+
+
+executer l'operation inverse 
+
+depile les constantes nouvelles de pile empile les constantes stocker dans old\-Const 
+
+Implements \hyperlink{class_commande_a8523106c6ca6cc7c04323a641c16e563}{Commande}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/commande.\-h\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/commande.\-cpp\end{DoxyCompactItemize}

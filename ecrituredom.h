@@ -22,12 +22,12 @@ class EcritureDom
                 ~EcritureDom();
                 //! ajoute une pile dans le fichier xml
                 /*!
-                  \param pointeur vers la pile a ajouter
+                  \param onglet pointeur vers la pile a ajouter
                 */
                 void ajoutpile(QStack<Constante *> * onglet);
                 //! enregistre un parametre de la calculatrice
                 /*!
-                  \param valeur a ajouter
+                  \param type valeur a ajouter
                 */
                 void ajoutpara(QString type);
 

@@ -1,0 +1,287 @@
+\hypertarget{class_c_expression}{\section{C\-Expression Class Reference}
+\label{class_c_expression}\index{C\-Expression@{C\-Expression}}
+}
+
+
+\hyperlink{class_c_expression}{C\-Expression} class.  
+
+
+
+
+{\ttfamily \#include $<$constante.\-h$>$}
+
+Inheritance diagram for C\-Expression\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_c_expression}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_expression_abe2a95c195c0f029e043713e6b2bd9b4}{C\-Expression} (const Q\-String \&ex)
+\begin{DoxyCompactList}\small\item\em constructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_c_expression_aaf547abee194320f2c2edcb537f35bb3}{C\-Expression} (const \hyperlink{class_c_expression}{C\-Expression} \&c)
+\begin{DoxyCompactList}\small\item\em constructeur par copie. \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_a0fbadaea165e135c3e12bc35b31a2d55}{get\-Copy} ()
+\begin{DoxyCompactList}\small\item\em retourne une copie de la constante \end{DoxyCompactList}\item 
+Q\-String \hyperlink{class_c_expression_a54a798d90fe842c6e95f2c85fc73e0f6}{get\-Exp} () const 
+\begin{DoxyCompactList}\small\item\em retourne la valeur de l'expression \end{DoxyCompactList}\item 
+void \hyperlink{class_c_expression_adcac8fc467b9eeedcba5f5eab4e390b6}{set\-Exp} (const Q\-String \&e)
+\begin{DoxyCompactList}\small\item\em affecte l'expression \end{DoxyCompactList}\item 
+Q\-String \hyperlink{class_c_expression_a642f89de974553f82cff731f6d83fea6}{get\-Valueto\-String} () const 
+\begin{DoxyCompactList}\small\item\em retourne le contenu de la constante sous forme de texte \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_acd13043bccbe2e9d63604ecc9b1b2917}{operator-\/} (Q\-String e)
+\begin{DoxyCompactList}\small\item\em effectue l'operation -\/ inversee \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_af5816c2cd38da72d65631f1b8f7c67e8}{operator/} (Q\-String e)
+\begin{DoxyCompactList}\small\item\em affectue l'operation / inversee \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_a673be1d66195b8ee7fac79b53d8cf371}{operator+} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation + entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_af7fdc3e9fa28257c0cdfed04995cbe8e}{operator-\/} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation -\/ entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_a0bcd0e43fe294b187d7ff7240a246ac2}{operator$\ast$} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation $\ast$ entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_expression_a92584ee17ad2f42488a37aa991fa3352}{operator/} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation / entre deux constantes \end{DoxyCompactList}\item 
+\hypertarget{class_c_expression_a622d1164b24e06c6393ea8c2eb387fb0}{\hyperlink{class_c_expression_a622d1164b24e06c6393ea8c2eb387fb0}{$\sim$\-C\-Expression} ()}\label{class_c_expression_a622d1164b24e06c6393ea8c2eb387fb0}
+
+\begin{DoxyCompactList}\small\item\em destructeur. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_c_expression}{C\-Expression} class. 
+
+classe des types expressions 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_expression_abe2a95c195c0f029e043713e6b2bd9b4}{\index{C\-Expression@{C\-Expression}!C\-Expression@{C\-Expression}}
+\index{C\-Expression@{C\-Expression}!CExpression@{C\-Expression}}
+\subsubsection[{C\-Expression}]{\setlength{\rightskip}{0pt plus 5cm}C\-Expression\-::\-C\-Expression (
+\begin{DoxyParamCaption}
+\item[{const Q\-String \&}]{ex}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_expression_abe2a95c195c0f029e043713e6b2bd9b4}
+
+
+constructeur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ex} & expression \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_c_expression_aaf547abee194320f2c2edcb537f35bb3}{\index{C\-Expression@{C\-Expression}!C\-Expression@{C\-Expression}}
+\index{C\-Expression@{C\-Expression}!CExpression@{C\-Expression}}
+\subsubsection[{C\-Expression}]{\setlength{\rightskip}{0pt plus 5cm}C\-Expression\-::\-C\-Expression (
+\begin{DoxyParamCaption}
+\item[{const {\bf C\-Expression} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_expression_aaf547abee194320f2c2edcb537f35bb3}
+
+
+constructeur par copie. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & reference de l'expression a copier \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_expression_a0fbadaea165e135c3e12bc35b31a2d55}{\index{C\-Expression@{C\-Expression}!get\-Copy@{get\-Copy}}
+\index{get\-Copy@{get\-Copy}!CExpression@{C\-Expression}}
+\subsubsection[{get\-Copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante}$\ast$ C\-Expression\-::get\-Copy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_c_expression_a0fbadaea165e135c3e12bc35b31a2d55}
+
+
+retourne une copie de la constante 
+
+\begin{DoxyReturn}{Returns}
+pointeur vers une copie de la constante 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_addd94a5006b4ed68cc0d1d7b5864e10a}{Constante}.
+
+\hypertarget{class_c_expression_a54a798d90fe842c6e95f2c85fc73e0f6}{\index{C\-Expression@{C\-Expression}!get\-Exp@{get\-Exp}}
+\index{get\-Exp@{get\-Exp}!CExpression@{C\-Expression}}
+\subsubsection[{get\-Exp}]{\setlength{\rightskip}{0pt plus 5cm}Q\-String C\-Expression\-::get\-Exp (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_expression_a54a798d90fe842c6e95f2c85fc73e0f6}
+
+
+retourne la valeur de l'expression 
+
+\begin{DoxyReturn}{Returns}
+Q\-String expression 
+\end{DoxyReturn}
+\hypertarget{class_c_expression_a642f89de974553f82cff731f6d83fea6}{\index{C\-Expression@{C\-Expression}!get\-Valueto\-String@{get\-Valueto\-String}}
+\index{get\-Valueto\-String@{get\-Valueto\-String}!CExpression@{C\-Expression}}
+\subsubsection[{get\-Valueto\-String}]{\setlength{\rightskip}{0pt plus 5cm}Q\-String C\-Expression\-::get\-Valueto\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_c_expression_a642f89de974553f82cff731f6d83fea6}
+
+
+retourne le contenu de la constante sous forme de texte 
+
+\begin{DoxyReturn}{Returns}
+Q\-String valeur formatee de la constante 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_a93d89080856c972bdebc3619fc957f52}{Constante}.
+
+\hypertarget{class_c_expression_a0bcd0e43fe294b187d7ff7240a246ac2}{\index{C\-Expression@{C\-Expression}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!CExpression@{C\-Expression}}
+\subsubsection[{operator$\ast$}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_expression_a0bcd0e43fe294b187d7ff7240a246ac2}
+
+
+retourne le resultat de l'operation $\ast$ entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_ae7c4cf6a493277ec98ae346e13bbf82a}{Constante}.
+
+\hypertarget{class_c_expression_a673be1d66195b8ee7fac79b53d8cf371}{\index{C\-Expression@{C\-Expression}!operator+@{operator+}}
+\index{operator+@{operator+}!CExpression@{C\-Expression}}
+\subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator+ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_expression_a673be1d66195b8ee7fac79b53d8cf371}
+
+
+retourne le resultat de l'operation + entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_ae1c9e9fa9b3272e37bdb292509741831}{Constante}.
+
+\hypertarget{class_c_expression_acd13043bccbe2e9d63604ecc9b1b2917}{\index{C\-Expression@{C\-Expression}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!CExpression@{C\-Expression}}
+\subsubsection[{operator-\/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{e}
+\end{DoxyParamCaption}
+)}}\label{class_c_expression_acd13043bccbe2e9d63604ecc9b1b2917}
+
+
+effectue l'operation -\/ inversee 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & valeur a ajouter \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_c_expression_af7fdc3e9fa28257c0cdfed04995cbe8e}{\index{C\-Expression@{C\-Expression}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!CExpression@{C\-Expression}}
+\subsubsection[{operator-\/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_expression_af7fdc3e9fa28257c0cdfed04995cbe8e}
+
+
+retourne le resultat de l'operation -\/ entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_a9d0df3d484c2d87556cb4faa73606862}{Constante}.
+
+\hypertarget{class_c_expression_af5816c2cd38da72d65631f1b8f7c67e8}{\index{C\-Expression@{C\-Expression}!operator/@{operator/}}
+\index{operator/@{operator/}!CExpression@{C\-Expression}}
+\subsubsection[{operator/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator/ (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{e}
+\end{DoxyParamCaption}
+)}}\label{class_c_expression_af5816c2cd38da72d65631f1b8f7c67e8}
+
+
+affectue l'operation / inversee 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & valeur a ajouter \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_c_expression_a92584ee17ad2f42488a37aa991fa3352}{\index{C\-Expression@{C\-Expression}!operator/@{operator/}}
+\index{operator/@{operator/}!CExpression@{C\-Expression}}
+\subsubsection[{operator/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Expression\-::operator/ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_expression_a92584ee17ad2f42488a37aa991fa3352}
+
+
+retourne le resultat de l'operation / entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_af83c6680a11bc9ca5db49a32864151dd}{Constante}.
+
+\hypertarget{class_c_expression_adcac8fc467b9eeedcba5f5eab4e390b6}{\index{C\-Expression@{C\-Expression}!set\-Exp@{set\-Exp}}
+\index{set\-Exp@{set\-Exp}!CExpression@{C\-Expression}}
+\subsubsection[{set\-Exp}]{\setlength{\rightskip}{0pt plus 5cm}void C\-Expression\-::set\-Exp (
+\begin{DoxyParamCaption}
+\item[{const Q\-String \&}]{e}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_expression_adcac8fc467b9eeedcba5f5eab4e390b6}
+
+
+affecte l'expression 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & expression \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/constante.\-h\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/constante.\-cpp\end{DoxyCompactItemize}

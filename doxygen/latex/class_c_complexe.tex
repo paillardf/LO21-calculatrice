@@ -1,0 +1,252 @@
+\hypertarget{class_c_complexe}{\section{C\-Complexe Class Reference}
+\label{class_c_complexe}\index{C\-Complexe@{C\-Complexe}}
+}
+
+
+\hyperlink{class_c_complexe}{C\-Complexe} class.  
+
+
+
+
+{\ttfamily \#include $<$constante.\-h$>$}
+
+Inheritance diagram for C\-Complexe\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_c_complexe}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_complexe_afd567f5a10d7fcf6128124b220718973}{C\-Complexe} (\hyperlink{class_constante}{Constante} $\ast$r, \hyperlink{class_constante}{Constante} $\ast$i)
+\begin{DoxyCompactList}\small\item\em constructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_c_complexe_a20f9638e3ba3600744ec387fa70cc30b}{C\-Complexe} (const \hyperlink{class_c_complexe}{C\-Complexe} \&c)
+\begin{DoxyCompactList}\small\item\em constructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a5afb89b25938e8c6b457de3b80da5cb0}{get\-Copy} ()
+\begin{DoxyCompactList}\small\item\em retourne une copie de la constante \end{DoxyCompactList}\item 
+\hypertarget{class_c_complexe_a6dfa179b48b5bb2ba5eb55fec7e971b8}{\hyperlink{class_c_complexe_a6dfa179b48b5bb2ba5eb55fec7e971b8}{$\sim$\-C\-Complexe} ()}\label{class_c_complexe_a6dfa179b48b5bb2ba5eb55fec7e971b8}
+
+\begin{DoxyCompactList}\small\item\em destructeur. \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a79bf21767456df407987744abc6da88b}{get\-Re} () const 
+\begin{DoxyCompactList}\small\item\em retourne la partie reel du complexe. \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a98d9b7c06bb830be93ab1306a57d716f}{get\-Im} () const 
+\begin{DoxyCompactList}\small\item\em retourne la partie imaginaire du complexe. \end{DoxyCompactList}\item 
+Q\-String \hyperlink{class_c_complexe_a2ac287ee5fac2c2365fe618f47d235dc}{get\-Valueto\-String} () const 
+\begin{DoxyCompactList}\small\item\em retourne le contenu de la constante sous forme de texte \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a3ff3a06dde38c3fba33fafbef7b3cd99}{operator+} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation + entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a2661c1f2dedc3f417af1a941f11ca583}{operator-\/} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation -\/ entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_aa0d80726cdd5b1aba17ac25c2bed1194}{operator$\ast$} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation $\ast$ entre deux constantes \end{DoxyCompactList}\item 
+\hyperlink{class_constante}{Constante} $\ast$ \hyperlink{class_c_complexe_a518ad5669537f64418ef6007687a3297}{operator/} (\hyperlink{class_constante}{Constante} \&c1)
+\begin{DoxyCompactList}\small\item\em retourne le resultat de l'operation / entre deux constantes \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_c_complexe}{C\-Complexe} class. 
+
+classe des types complexes 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_complexe_afd567f5a10d7fcf6128124b220718973}{\index{C\-Complexe@{C\-Complexe}!C\-Complexe@{C\-Complexe}}
+\index{C\-Complexe@{C\-Complexe}!CComplexe@{C\-Complexe}}
+\subsubsection[{C\-Complexe}]{\setlength{\rightskip}{0pt plus 5cm}C\-Complexe\-::\-C\-Complexe (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} $\ast$}]{r, }
+\item[{{\bf Constante} $\ast$}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_complexe_afd567f5a10d7fcf6128124b220718973}
+
+
+constructeur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & pointeur vers la constante partie reel \\
+\hline
+{\em i} & pointeur vers la constante partie imaginaire \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_c_complexe_a20f9638e3ba3600744ec387fa70cc30b}{\index{C\-Complexe@{C\-Complexe}!C\-Complexe@{C\-Complexe}}
+\index{C\-Complexe@{C\-Complexe}!CComplexe@{C\-Complexe}}
+\subsubsection[{C\-Complexe}]{\setlength{\rightskip}{0pt plus 5cm}C\-Complexe\-::\-C\-Complexe (
+\begin{DoxyParamCaption}
+\item[{const {\bf C\-Complexe} \&}]{c}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_complexe_a20f9638e3ba3600744ec387fa70cc30b}
+
+
+constructeur. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & reference vers le \hyperlink{class_c_complexe}{C\-Complexe} a copier \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_complexe_a5afb89b25938e8c6b457de3b80da5cb0}{\index{C\-Complexe@{C\-Complexe}!get\-Copy@{get\-Copy}}
+\index{get\-Copy@{get\-Copy}!CComplexe@{C\-Complexe}}
+\subsubsection[{get\-Copy}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante}$\ast$ C\-Complexe\-::get\-Copy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_c_complexe_a5afb89b25938e8c6b457de3b80da5cb0}
+
+
+retourne une copie de la constante 
+
+\begin{DoxyReturn}{Returns}
+pointeur vers une copie de la constante 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_addd94a5006b4ed68cc0d1d7b5864e10a}{Constante}.
+
+\hypertarget{class_c_complexe_a98d9b7c06bb830be93ab1306a57d716f}{\index{C\-Complexe@{C\-Complexe}!get\-Im@{get\-Im}}
+\index{get\-Im@{get\-Im}!CComplexe@{C\-Complexe}}
+\subsubsection[{get\-Im}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante}$\ast$ C\-Complexe\-::get\-Im (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_complexe_a98d9b7c06bb830be93ab1306a57d716f}
+
+
+retourne la partie imaginaire du complexe. 
+
+\begin{DoxyReturn}{Returns}
+pointeur vers la constante partie imaginaire 
+\end{DoxyReturn}
+\hypertarget{class_c_complexe_a79bf21767456df407987744abc6da88b}{\index{C\-Complexe@{C\-Complexe}!get\-Re@{get\-Re}}
+\index{get\-Re@{get\-Re}!CComplexe@{C\-Complexe}}
+\subsubsection[{get\-Re}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante}$\ast$ C\-Complexe\-::get\-Re (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}}\label{class_c_complexe_a79bf21767456df407987744abc6da88b}
+
+
+retourne la partie reel du complexe. 
+
+\begin{DoxyReturn}{Returns}
+pointeur vers la constante partie reel 
+\end{DoxyReturn}
+\hypertarget{class_c_complexe_a2ac287ee5fac2c2365fe618f47d235dc}{\index{C\-Complexe@{C\-Complexe}!get\-Valueto\-String@{get\-Valueto\-String}}
+\index{get\-Valueto\-String@{get\-Valueto\-String}!CComplexe@{C\-Complexe}}
+\subsubsection[{get\-Valueto\-String}]{\setlength{\rightskip}{0pt plus 5cm}Q\-String C\-Complexe\-::get\-Valueto\-String (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}}\label{class_c_complexe_a2ac287ee5fac2c2365fe618f47d235dc}
+
+
+retourne le contenu de la constante sous forme de texte 
+
+\begin{DoxyReturn}{Returns}
+Q\-String valeur formatee de la constante 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_a93d89080856c972bdebc3619fc957f52}{Constante}.
+
+\hypertarget{class_c_complexe_aa0d80726cdd5b1aba17ac25c2bed1194}{\index{C\-Complexe@{C\-Complexe}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!CComplexe@{C\-Complexe}}
+\subsubsection[{operator$\ast$}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Complexe\-::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_complexe_aa0d80726cdd5b1aba17ac25c2bed1194}
+
+
+retourne le resultat de l'operation $\ast$ entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_ae7c4cf6a493277ec98ae346e13bbf82a}{Constante}.
+
+\hypertarget{class_c_complexe_a3ff3a06dde38c3fba33fafbef7b3cd99}{\index{C\-Complexe@{C\-Complexe}!operator+@{operator+}}
+\index{operator+@{operator+}!CComplexe@{C\-Complexe}}
+\subsubsection[{operator+}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Complexe\-::operator+ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_complexe_a3ff3a06dde38c3fba33fafbef7b3cd99}
+
+
+retourne le resultat de l'operation + entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_ae1c9e9fa9b3272e37bdb292509741831}{Constante}.
+
+\hypertarget{class_c_complexe_a2661c1f2dedc3f417af1a941f11ca583}{\index{C\-Complexe@{C\-Complexe}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!CComplexe@{C\-Complexe}}
+\subsubsection[{operator-\/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Complexe\-::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_complexe_a2661c1f2dedc3f417af1a941f11ca583}
+
+
+retourne le resultat de l'operation -\/ entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_a9d0df3d484c2d87556cb4faa73606862}{Constante}.
+
+\hypertarget{class_c_complexe_a518ad5669537f64418ef6007687a3297}{\index{C\-Complexe@{C\-Complexe}!operator/@{operator/}}
+\index{operator/@{operator/}!CComplexe@{C\-Complexe}}
+\subsubsection[{operator/}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Constante} $\ast$ C\-Complexe\-::operator/ (
+\begin{DoxyParamCaption}
+\item[{{\bf Constante} \&}]{c1}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_c_complexe_a518ad5669537f64418ef6007687a3297}
+
+
+retourne le resultat de l'operation / entre deux constantes 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c1} & reference vers le deuxieme operande de type \hyperlink{class_constante}{Constante} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+un pointeur \hyperlink{class_constante}{Constante} sur le resultat 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_constante_af83c6680a11bc9ca5db49a32864151dd}{Constante}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/constante.\-h\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/constante.\-cpp\end{DoxyCompactItemize}

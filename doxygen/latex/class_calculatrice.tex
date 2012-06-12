@@ -1,0 +1,374 @@
+\hypertarget{class_calculatrice}{\section{Calculatrice Class Reference}
+\label{class_calculatrice}\index{Calculatrice@{Calculatrice}}
+}
+
+
+\hyperlink{class_calculatrice}{Calculatrice} class.  
+
+
+
+
+{\ttfamily \#include $<$calculatrice.\-h$>$}
+
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_calculatrice_a1a45487e6b9c8c81960f53e8a1f08401}{creer\-Tab} ()
+\begin{DoxyCompactList}\small\item\em cree un nouvel onglet \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a47a89aec6c63b04b64cf1cb9c742739f}{detruire\-Tab} (int index)
+\begin{DoxyCompactList}\small\item\em detruit l'onglet actif \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}{ecrire} (const Q\-String \&a)
+\begin{DoxyCompactList}\small\item\em ecrire dans le champ texte \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}{effacer} ()
+\begin{DoxyCompactList}\small\item\em effacer le dernier caractère du champ texte \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}{envoyer} ()
+\begin{DoxyCompactList}\small\item\em Envoyer le contenu du champ texte pour etre analyser. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}{afficher} (int max)
+\begin{DoxyCompactList}\small\item\em afficher la pile active \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_ae04068faaa66847c3f318c018824a277}{annuler} ()
+\begin{DoxyCompactList}\small\item\em annule la dernière commande \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_ac9fea1beaab60d0c73c017a5d225a56c}{retablir} ()
+\begin{DoxyCompactList}\small\item\em retabli la dernière commande \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_af9e1bd08361e13a0d68da5ff6ebb79d5}{redimentionner} (bool)
+\begin{DoxyCompactList}\small\item\em redimentionne la fenetre de la \hyperlink{class_calculatrice}{Calculatrice} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_pile}{Pile} $\ast$ \hyperlink{class_calculatrice_a48f797c689bd992a8fee2404bbd75896}{pile\-Active} ()
+\begin{DoxyCompactList}\small\item\em Recherche et retourne la pile active. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Entier. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Rationnel. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Reel. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Complexe. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Degre. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian} ()
+\begin{DoxyCompactList}\small\item\em Active l'option Radian. \end{DoxyCompactList}\item 
+void \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde} ()
+\begin{DoxyCompactList}\small\item\em Enregistre l'etat actuelle des piles et options de la calculatrice. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_calculatrice}{Calculatrice} $\ast$ \hyperlink{class_calculatrice_a727f903b74a7761efca79d2360c74a34}{get\-Instance} ()
+\begin{DoxyCompactList}\small\item\em Initialisation d'un objet \hyperlink{class_calculatrice}{Calculatrice} si aucun n'existe. \end{DoxyCompactList}\item 
+static void \hyperlink{class_calculatrice_afadb6109e631a4050e299720723b467a}{kill} ()
+\begin{DoxyCompactList}\small\item\em Detruit l'unique objet \hyperlink{class_calculatrice}{Calculatrice}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::vector$<$ \hyperlink{class_pile}{Pile} $\ast$ $>$ \hyperlink{class_calculatrice_ae45c1dccda6c9ba95aa43e65fb566e1e}{onglet}
+\begin{DoxyCompactList}\small\item\em Tableau des pointeurs de piles. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{class_calculatrice}{Calculatrice} class. 
+
+fenetre principale de la calculatrice. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}{\index{Calculatrice@{Calculatrice}!afficher@{afficher}}
+\index{afficher@{afficher}!Calculatrice@{Calculatrice}}
+\subsubsection[{afficher}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::afficher (
+\begin{DoxyParamCaption}
+\item[{int}]{max}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}
+
+
+afficher la pile active 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max} & nombre d'element à afficher. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}{ecrire()}, \hyperlink{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}{effacer()} et \hyperlink{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}{envoyer()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_ae04068faaa66847c3f318c018824a277}{\index{Calculatrice@{Calculatrice}!annuler@{annuler}}
+\index{annuler@{annuler}!Calculatrice@{Calculatrice}}
+\subsubsection[{annuler}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::annuler (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_ae04068faaa66847c3f318c018824a277}
+
+
+annule la dernière commande 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_ac9fea1beaab60d0c73c017a5d225a56c}{retablir()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{\index{Calculatrice@{Calculatrice}!chg\-Complexe@{chg\-Complexe}}
+\index{chg\-Complexe@{chg\-Complexe}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Complexe}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Complexe (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}
+
+
+Active l'option Complexe. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()}, \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{\index{Calculatrice@{Calculatrice}!chg\-Degre@{chg\-Degre}}
+\index{chg\-Degre@{chg\-Degre}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Degre}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Degre (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}
+
+
+Active l'option Degre. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{\index{Calculatrice@{Calculatrice}!chg\-Entier@{chg\-Entier}}
+\index{chg\-Entier@{chg\-Entier}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Entier}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Entier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_a5641a5ff484e68bb4917143a52086179}
+
+
+Active l'option Entier. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()}, \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{\index{Calculatrice@{Calculatrice}!chg\-Radian@{chg\-Radian}}
+\index{chg\-Radian@{chg\-Radian}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Radian}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Radian (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}
+
+
+Active l'option Radian. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{\index{Calculatrice@{Calculatrice}!chg\-Rationnel@{chg\-Rationnel}}
+\index{chg\-Rationnel@{chg\-Rationnel}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Rationnel}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Rationnel (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}
+
+
+Active l'option Rationnel. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()}, \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{\index{Calculatrice@{Calculatrice}!chg\-Reel@{chg\-Reel}}
+\index{chg\-Reel@{chg\-Reel}!Calculatrice@{Calculatrice}}
+\subsubsection[{chg\-Reel}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::chg\-Reel (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}
+
+
+Active l'option Reel. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()}, \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} et \hyperlink{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{sauvegarde()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a1a45487e6b9c8c81960f53e8a1f08401}{\index{Calculatrice@{Calculatrice}!creer\-Tab@{creer\-Tab}}
+\index{creer\-Tab@{creer\-Tab}!Calculatrice@{Calculatrice}}
+\subsubsection[{creer\-Tab}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::creer\-Tab (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a1a45487e6b9c8c81960f53e8a1f08401}
+
+
+cree un nouvel onglet 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a47a89aec6c63b04b64cf1cb9c742739f}{detruire\-Tab()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a47a89aec6c63b04b64cf1cb9c742739f}{\index{Calculatrice@{Calculatrice}!detruire\-Tab@{detruire\-Tab}}
+\index{detruire\-Tab@{detruire\-Tab}!Calculatrice@{Calculatrice}}
+\subsubsection[{detruire\-Tab}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::detruire\-Tab (
+\begin{DoxyParamCaption}
+\item[{int}]{index}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a47a89aec6c63b04b64cf1cb9c742739f}
+
+
+detruit l'onglet actif 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & un integer (position de l'onglet) \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a1a45487e6b9c8c81960f53e8a1f08401}{creer\-Tab()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}{\index{Calculatrice@{Calculatrice}!ecrire@{ecrire}}
+\index{ecrire@{ecrire}!Calculatrice@{Calculatrice}}
+\subsubsection[{ecrire}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::ecrire (
+\begin{DoxyParamCaption}
+\item[{const Q\-String \&}]{a}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}
+
+
+ecrire dans le champ texte 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & une Q\-String. \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}{effacer()}, \hyperlink{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}{envoyer()} et \hyperlink{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}{afficher()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}{\index{Calculatrice@{Calculatrice}!effacer@{effacer}}
+\index{effacer@{effacer}!Calculatrice@{Calculatrice}}
+\subsubsection[{effacer}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::effacer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}
+
+
+effacer le dernier caractère du champ texte 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}{ecrire()}, \hyperlink{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}{envoyer()} et \hyperlink{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}{afficher()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}{\index{Calculatrice@{Calculatrice}!envoyer@{envoyer}}
+\index{envoyer@{envoyer}!Calculatrice@{Calculatrice}}
+\subsubsection[{envoyer}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::envoyer (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_a0698e23c0033882dfd4f1c92c819fb76}
+
+
+Envoyer le contenu du champ texte pour etre analyser. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a62b04788444746c01b1c99d8b1daeb50}{ecrire()}, \hyperlink{class_calculatrice_a07bc4dfff9dbc5e2805873c470b64609}{effacer()} et \hyperlink{class_calculatrice_a4b1d40e63040fb49b730d25b97f11147}{afficher()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a727f903b74a7761efca79d2360c74a34}{\index{Calculatrice@{Calculatrice}!get\-Instance@{get\-Instance}}
+\index{get\-Instance@{get\-Instance}!Calculatrice@{Calculatrice}}
+\subsubsection[{get\-Instance}]{\setlength{\rightskip}{0pt plus 5cm}static {\bf Calculatrice}$\ast$ Calculatrice\-::get\-Instance (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{class_calculatrice_a727f903b74a7761efca79d2360c74a34}
+
+
+Initialisation d'un objet \hyperlink{class_calculatrice}{Calculatrice} si aucun n'existe. 
+
+\begin{DoxyReturn}{Returns}
+pointeur vers un objet \hyperlink{class_calculatrice}{Calculatrice} 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_afadb6109e631a4050e299720723b467a}{kill()}, Calculatrice() et $\sim$\-Calculatrice() 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_afadb6109e631a4050e299720723b467a}{\index{Calculatrice@{Calculatrice}!kill@{kill}}
+\index{kill@{kill}!Calculatrice@{Calculatrice}}
+\subsubsection[{kill}]{\setlength{\rightskip}{0pt plus 5cm}static void Calculatrice\-::kill (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}}\label{class_calculatrice_afadb6109e631a4050e299720723b467a}
+
+
+Detruit l'unique objet \hyperlink{class_calculatrice}{Calculatrice}. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a727f903b74a7761efca79d2360c74a34}{get\-Instance()}, Calculatrice() et $\sim$\-Calculatrice() 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a48f797c689bd992a8fee2404bbd75896}{\index{Calculatrice@{Calculatrice}!pile\-Active@{pile\-Active}}
+\index{pile\-Active@{pile\-Active}!Calculatrice@{Calculatrice}}
+\subsubsection[{pile\-Active}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Pile} $\ast$ Calculatrice\-::pile\-Active (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_a48f797c689bd992a8fee2404bbd75896}
+
+
+Recherche et retourne la pile active. 
+
+\begin{DoxyReturn}{Returns}
+pointeur de pile active 
+\end{DoxyReturn}
+\hypertarget{class_calculatrice_af9e1bd08361e13a0d68da5ff6ebb79d5}{\index{Calculatrice@{Calculatrice}!redimentionner@{redimentionner}}
+\index{redimentionner@{redimentionner}!Calculatrice@{Calculatrice}}
+\subsubsection[{redimentionner}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::redimentionner (
+\begin{DoxyParamCaption}
+\item[{bool}]{t}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_af9e1bd08361e13a0d68da5ff6ebb79d5}
+
+
+redimentionne la fenetre de la \hyperlink{class_calculatrice}{Calculatrice} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & boolean pour les deux positions. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_calculatrice_ac9fea1beaab60d0c73c017a5d225a56c}{\index{Calculatrice@{Calculatrice}!retablir@{retablir}}
+\index{retablir@{retablir}!Calculatrice@{Calculatrice}}
+\subsubsection[{retablir}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::retablir (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}}\label{class_calculatrice_ac9fea1beaab60d0c73c017a5d225a56c}
+
+
+retabli la dernière commande 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_ae04068faaa66847c3f318c018824a277}{annuler()} 
+\end{DoxySeeAlso}
+\hypertarget{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}{\index{Calculatrice@{Calculatrice}!sauvegarde@{sauvegarde}}
+\index{sauvegarde@{sauvegarde}!Calculatrice@{Calculatrice}}
+\subsubsection[{sauvegarde}]{\setlength{\rightskip}{0pt plus 5cm}void Calculatrice\-::sauvegarde (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_calculatrice_a164d12758f93d6b7d038a12155d445b2}
+
+
+Enregistre l'etat actuelle des piles et options de la calculatrice. 
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_calculatrice_a5641a5ff484e68bb4917143a52086179}{chg\-Entier()}, \hyperlink{class_calculatrice_ab932c8e399ffc9ab8c3edf17b69a93b0}{chg\-Rationnel()}, \hyperlink{class_calculatrice_ae7331880310b197bee6d4576a1aeaf34}{chg\-Reel()}, \hyperlink{class_calculatrice_a8eaad4eaf0ef211152d8207dea5893bd}{chg\-Complexe()}, \hyperlink{class_calculatrice_ab399629989ffbfb8a5a58110fa399372}{chg\-Degre()} et \hyperlink{class_calculatrice_a26d589ddd37ddfa604dbaec6b5cbcb36}{chg\-Radian()} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{class_calculatrice_ae45c1dccda6c9ba95aa43e65fb566e1e}{\index{Calculatrice@{Calculatrice}!onglet@{onglet}}
+\index{onglet@{onglet}!Calculatrice@{Calculatrice}}
+\subsubsection[{onglet}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<${\bf Pile} $\ast$ $>$ Calculatrice\-::onglet}}\label{class_calculatrice_ae45c1dccda6c9ba95aa43e65fb566e1e}
+
+
+Tableau des pointeurs de piles. 
+
+Chacune des piles correspond à un onglet dans la fenetre graphique 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/calculatrice.\-h\item 
+E\-:/\-Dropbox/\-U\-T\-C/\-G\-I02/\-L\-O21/\-Calculatrice/calculatrice.\-cpp\end{DoxyCompactItemize}

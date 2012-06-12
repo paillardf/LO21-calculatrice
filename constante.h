@@ -66,12 +66,12 @@ public:
 
     //! constructeur.
     /*!
-      \param valeur entiere de la constante
+      \param v valeur entiere de la constante
     */
     CEntier(int v):value(v){}
     //! constructeur par copie.
     /*!
-      \param reference vers la constante a copier
+      \param c reference vers la constante a copier
     */
     CEntier(const CEntier & c):value(c.getValue()){}
 
@@ -127,12 +127,12 @@ public:
 
     //! constructeur.
     /*!
-      \param valeur de la constante
+      \param v valeur de la constante
     */
     CReel(float v):value(v){}
     //! constructeur par copie.
     /*!
-      \param reference vers le CReel a copier
+      \param c reference vers le CReel a copier
     */
     CReel(const CReel & c):value(c.getValue()){}
 
@@ -192,7 +192,7 @@ private:
     //! calcul du pgcd
     /*!
       \param a parametre entier 1
-      \param a parametre entier 2
+      \param b parametre entier 2
       \return resultat entier
     */
     int PGCD(int a, int b);
@@ -242,7 +242,7 @@ public:
 
     //! affect un numerateur.
     /*!
-      \param numerateur integer
+      \param e numerateur integer
     */
     void setNum(int e){
         num=e;
@@ -250,7 +250,7 @@ public:
 
     //! affect un denominateur.
     /*!
-      \param denominateur integer
+      \param e denominateur integer
     */
     void setDenom(int e){
         denom =e;
@@ -284,12 +284,12 @@ private:
 public:
     //! constructeur.
     /*!
-     \param expression
+     \param ex expression
     */
     CExpression(const QString & ex):exp(ex){}
     //! constructeur par copie.
     /*!
-     \param reference de l'expression a copier
+     \param c reference de l'expression a copier
     */
     CExpression(const CExpression & c ):exp(c.getExp()){}
 
@@ -308,7 +308,7 @@ public:
     }
     //! affecte l'expression
     /*!
-     \param expression
+     \param e expression
     */
     void setExp(const QString & e){
          exp=e;
@@ -317,7 +317,15 @@ public:
         return exp;
     }
 
+    //! effectue l'operation - inversee
+    /*!
+     \param e valeur a ajouter
+    */
     Constante * operator-(QString e);
+    //! affectue l'operation / inversee
+    /*!
+     \param e valeur a ajouter
+    */
     Constante * operator/(QString e);
 
 
